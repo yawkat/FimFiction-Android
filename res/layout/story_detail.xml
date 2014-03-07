@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp">
+
+        <TextView
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:id="@+id/author"
+                android:layout_alignBaseline="@+id/title"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        <TextView
+                style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:id="@+id/title"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/author"/>
+
+        <at.yawk.fimfiction.android.DynamicImageView
+                android:visibility="gone"
+                android:contentDescription="@string/cover"
+                android:layout_below="@id/title"
+                android:id="@+id/cover"
+                android:scaleType="centerCrop"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+
+
+        <TextView
+                android:id="@+id/description"
+                android:layout_below="@id/cover"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/description"
+                android:layout_height="wrap_content"
+                android:id="@+id/characters"/>
+
+        <LinearLayout
+                android:id="@+id/chapters"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/characters"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chapters">
+
+            <TextView
+                    android:id="@+id/favorite"
+                    android:text="@string/favorite"
+                    android:gravity="center"
+                    style="@android:style/TextAppearance.Medium"
+                    android:alpha="0.5"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/readlater"
+                    android:text="@string/readlater"
+                    android:gravity="center"
+                    android:layout_weight="0.5"
+                    style="@android:style/TextAppearance.Medium"
+                    android:alpha="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

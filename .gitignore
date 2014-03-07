@@ -1,0 +1,9 @@
+.idea/
+*.apk
+*.iml
+pom.xml
+gen/
+lib/
+res/drawable/icon.png
+target/
+local.properties

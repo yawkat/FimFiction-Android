@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp">
+
+    <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title"
+            android:inputType="textNoSuggestions"/>
+
+    <EditText
+            android:layout_below="@id/title"
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/author_id"
+            android:inputType="number"/>
+
+    <TextView
+            android:labelFor="@+id/favorite"
+            android:text="@string/favorited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Large"
+            android:layout_alignBaseline="@id/favorite"
+            />
+
+    <CheckBox
+            android:id="@+id/favorite"
+            android:layout_below="@id/author"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:labelFor="@+id/unread"
+            android:text="@string/unread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Large"
+            android:layout_alignBaseline="@id/unread"
+            />
+
+    <CheckBox
+            android:id="@+id/unread"
+            android:layout_below="@id/favorite"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:labelFor="@+id/readlater"
+            android:text="@string/readlater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Large"
+            android:layout_alignBaseline="@id/readlater"
+            />
+
+    <CheckBox
+            android:id="@+id/readlater"
+            android:layout_below="@id/unread"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout
+            android:layout_below="@id/readlater"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/content_rating_row">
+
+        <Spinner
+                android:id="@+id/content_rating"
+                android:entries="@array/content_rating"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:text="@string/sex_short"
+                android:labelFor="@+id/sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@android:style/TextAppearance.Large"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"/>
+
+        <CheckBox
+                android:id="@+id/sex"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:text="@string/gore_short"
+                android:labelFor="@+id/gore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@android:style/TextAppearance.Large"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"/>
+
+        <CheckBox
+                android:id="@+id/gore"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <Spinner
+            android:id="@+id/order"
+            android:layout_below="@id/content_rating_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/order"/>
+
+    <RelativeLayout
+            android:id="@+id/character_incl_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order"/>
+
+    <Button
+            android:id="@+id/submit"
+            android:text="@string/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+</RelativeLayout>

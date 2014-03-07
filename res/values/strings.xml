@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FimFiction</string>
+    <string name="unread">Unread</string>
+    <string name="readlater">Read Later</string>
+    <string name="favorites">Favorites</string>
+    <string name="done">~</string>
+    <string name="slash">/</string>
+    <string name="bullet">&#8226;</string>
+    <string name="cover">Cover</string>
+    <string name="ms_show">Show M/S</string>
+    <string name="ms_hide">Hide M/S</string>
+    <string name="title">Title</string>
+    <string name="author_id">Author ID</string>
+    <string name="favorited">Favorited</string>
+    <string name="gore_short">G</string>
+    <string name="sex_short">S</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="character_icon">character name</string>
+    <string name="plus">+</string>
+    <string name="add">Add</string>
+    <string name="login_invalid_password">Invalid Password</string>
+    <string name="login_invalid_username">Invalid Username</string>
+    <string name="login_unknown">Unknown Error</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="remember">Remember</string>
+    <string name="login">Login</string>
+    <string name="switch_account">Switch Account</string>
+    <array name="content_rating">
+        <item>Any</item>
+        <item>Everyone</item>
+        <item>Teen</item>
+        <item>Mature</item>
+    </array>
+    <array name="order">
+        <item>First Posted</item>
+        <item>Hot</item>
+        <item>Update Date</item>
+        <item>Rating</item>
+        <item>Views</item>
+        <item>Words</item>
+        <item>Comments</item>
+    </array>
+</resources>

@@ -14,16 +14,5 @@ Aims
 Setup
 -----
 
-- The default, un-customizable cache location is /storage/extSdCard/FimFiction . If you do not have storage at that location you will need to edit it manually (at.yawk.fimfiction.android.Constants).
-- The icon must be downloaded to res/drawable/icon.png . I use the FimFiction logo but decided against uploading it here for obvious reasons.
-
-Dependencies:
-- FimFiction-Java
-    - commons-lang
-    - commons-logging
-    - commons-codec
-    - httpclient
-    - httpcore
-    - tagsoup
-- Google Gson
-- Google Guava
+- A different icon can be placed in res/drawable/icon.png . The default is a basic placeholder that doesn't look particulary good but will work for testing purposes.
+- To compile using maven, run `mvn clean package android:deploy` with your device connected. Your android SDK location must be set in the ANDROID_HOME environment variable. You can find more information on that at [the maven-android-plugin tutorial](https://code.google.com/p/maven-android-plugin/wiki/GettingStarted).

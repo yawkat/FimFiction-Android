@@ -1,6 +1,7 @@
 package at.yawk.fimfiction.android;
 
 import android.app.Application;
+import android.os.Environment;
 import android.util.Log;
 import java.io.File;
 import java.util.Collection;
@@ -22,8 +23,10 @@ public class BrowserApp extends Application implements Constants {
     @Override
     public void onCreate() {
         super.onCreate();
-        ImageCache.instance = new ImageCache(new File(getFilesDir(), "images"));
+        ImageCache.instance = new ImageCache(new File(getSaveDir(), "images"));
     }
+
+    public File getSaveDir() { return new File(Environment.getExternalStorageDirectory(), "FimFiction"); }
 
     public void execute(final Fimtivity context, final Runnable task) {
         Task taskElement = new Task(context, task);

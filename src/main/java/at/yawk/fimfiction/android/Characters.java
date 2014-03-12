@@ -25,7 +25,7 @@ public class Characters implements Constants {
         loader.execute(new Runnable() {
             @Override
             public void run() {
-                final Bitmap image = imageCache.getImage(character.getImageUrl());
+                final Bitmap image = ImageCache.instance.getImage(character.getImageUrl());
                 ((ImageView) v.findViewById(R.id.icon)).setImageBitmap(Bitmap.createScaledBitmap(image,
                                                                                                  image.getWidth() * 2,
                                                                                                  image.getHeight() * 2,

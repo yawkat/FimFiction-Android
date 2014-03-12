@@ -2,6 +2,7 @@ package at.yawk.fimfiction.android;
 
 import android.app.Application;
 import android.util.Log;
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,6 +18,12 @@ public class BrowserApp extends Application implements Constants {
     private final ThreadPoolExecutor executor =
             new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
     private final Collection<Task> tasks = Collections.newSetFromMap(new WeakHashMap<Task, Boolean>());
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ImageCache.instance = new ImageCache(new File(getFilesDir(), "images"));
+    }
 
     public void execute(final Fimtivity context, final Runnable task) {
         Task taskElement = new Task(context, task);

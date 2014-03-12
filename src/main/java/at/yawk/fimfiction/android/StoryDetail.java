@@ -108,8 +108,8 @@ public class StoryDetail implements Constants {
                 @Override
                 public void run() {
                     final Bitmap bitmap = Connectivity.bigDownloads(context) ?
-                            imageCache.getImage(getImage()) :
-                            imageCache.getCachedImage(getImage());
+                            ImageCache.instance.getImage(getImage()) :
+                            ImageCache.instance.getCachedImage(getImage());
                     if (bitmap != null) {
                         new Handler(context.getMainLooper()).post(new Runnable() {
                             @Override

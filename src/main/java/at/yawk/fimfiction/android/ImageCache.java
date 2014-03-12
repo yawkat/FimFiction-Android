@@ -9,8 +9,13 @@ import java.net.URL;
 /**
  * @author Yawkat
  */
+
 public class ImageCache implements Constants {
-    private final File dir = new File(root, "images");
+    public static ImageCache instance;
+
+    private final File dir;
+
+    public ImageCache(File dir) { this.dir = dir; }
 
     public synchronized Bitmap getImage(URL url) {
         Bitmap b = getCachedImage(url);

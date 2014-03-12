@@ -210,7 +210,7 @@ public class StoryList extends Fimtivity {
         fileBuilder.append("stories/");
         fileBuilder.append(Files.escape(story.getString(Story.StoryKey.TITLE)));
         fileBuilder.append(".epub");
-        final File target = new File(root, fileBuilder.toString());
+        final File target = new File(getFilesDir(), fileBuilder.toString());
         new ProgressStoryDownloadTask(this) {
             @Override
             protected void onPostExecute(final Boolean result) {

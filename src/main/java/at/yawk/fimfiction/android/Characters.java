@@ -26,13 +26,27 @@ public class Characters implements Constants {
             @Override
             public void run() {
                 final Bitmap image = ImageCache.instance.getImage(character.getImageUrl());
-                ((ImageView) v.findViewById(R.id.icon)).setImageBitmap(Bitmap.createScaledBitmap(image,
-                                                                                                 image.getWidth() * 2,
-                                                                                                 image.getHeight() * 2,
-                                                                                                 false));
+                final View view = v.findViewById(R.id.icon);
+                if (view.getHandler() != null) {
+                    view.getHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            setImage((ImageView) view, image);
+                        }
+                    });
+                } else {
+                    setImage((ImageView) view, image);
+                }
             }
         });
         return v;
+    }
+
+    private static void setImage(ImageView view, Bitmap image) {
+        ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(image,
+                                                                    image.getWidth() * 2,
+                                                                    image.getHeight() * 2,
+                                                                    false));
     }
 
     public static CharacterList createCharacterList(final Activity context,

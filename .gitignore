@@ -1,7 +1,6 @@
 .idea/
 *.apk
 *.iml
-pom.xml
 gen/
 lib/
 target/

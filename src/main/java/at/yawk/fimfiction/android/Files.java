@@ -1,6 +1,8 @@
 package at.yawk.fimfiction.android;
 
 /**
+ * File name escaping.
+ *
  * @author Jonas Konrad (yawkat)
  */
 public class Files {

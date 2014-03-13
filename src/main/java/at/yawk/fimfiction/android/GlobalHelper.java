@@ -8,6 +8,8 @@ import lombok.Getter;
 import org.apache.log4j.Level;
 
 /**
+ * Global helper with singleton.
+ *
  * @author Jonas Konrad (yawkat)
  */
 @Getter

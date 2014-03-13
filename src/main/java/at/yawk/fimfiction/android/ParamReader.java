@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * Parcelable wrapper class for SearchParameters with title.
+ *
  * @author Yawkat
  */
 @RequiredArgsConstructor

@@ -19,6 +19,9 @@ import java.util.Iterator;
 import java.util.List;
 import lombok.extern.log4j.Log4j;
 
+/**
+ * Activity that displays a search.
+ */
 @Log4j
 public class StoryList extends Fimtivity {
     private static final SearchParameters UNREAD = SearchParameters.createMutable()
@@ -214,7 +217,7 @@ public class StoryList extends Fimtivity {
         fileBuilder.append(Files.escape(story.getString(Story.StoryKey.TITLE)));
         fileBuilder.append(".epub");
         final File target = new File(helper().baseDir(), fileBuilder.toString());
-        new ProgressStoryDownloadTask(this) {
+        new ProgressStoryDownloadTask(helper()) {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result) {

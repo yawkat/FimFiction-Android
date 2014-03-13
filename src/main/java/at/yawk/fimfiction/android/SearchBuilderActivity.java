@@ -4,6 +4,8 @@ import android.os.Bundle;
 import at.yawk.fimfiction.data.SearchParameters;
 
 /**
+ * Activity for SearchBuilder.
+ *
  * @author Yawkat
  */
 public class SearchBuilderActivity extends Fimtivity {

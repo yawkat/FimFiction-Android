@@ -7,6 +7,8 @@ import java.net.URL;
 import lombok.extern.log4j.Log4j;
 
 /**
+ * Helper class that provides easy caching for downloadable images.
+ *
  * @author Yawkat
  */
 @Log4j

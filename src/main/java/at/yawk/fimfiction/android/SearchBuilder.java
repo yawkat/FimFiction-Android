@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 /**
+ * Activity helper that provides options for custom search.
+ *
  * @author Yawkat
  */
 @Log4j

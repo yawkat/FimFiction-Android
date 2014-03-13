@@ -1,16 +1,17 @@
 package at.yawk.fimfiction.android;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * A StoryDownloadTask that shows its progress in a ProgressDialog.
+ *
  * @author Yawkat
  */
 @RequiredArgsConstructor
 public class ProgressStoryDownloadTask extends StoryDownloadTask {
-    private final Context context;
+    private final Helper helper;
     private ProgressDialog dialog;
 
     @Override
@@ -21,7 +22,7 @@ public class ProgressStoryDownloadTask extends StoryDownloadTask {
 
     @Override
     protected void onPreExecute() {
-        dialog = new ProgressDialog(context);
+        dialog = new ProgressDialog(helper.context());
         dialog.setIndeterminate(true);
         dialog.setMax(0);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

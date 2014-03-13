@@ -12,7 +12,10 @@ import lombok.Value;
 import lombok.extern.log4j.Log4j;
 
 /**
+ * Downloads a story.
+ *
  * @author Yawkat
+ * @see ProgressStoryDownloadTask
  */
 @Log4j
 public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, StoryDownloadTask.Progress, Boolean> {

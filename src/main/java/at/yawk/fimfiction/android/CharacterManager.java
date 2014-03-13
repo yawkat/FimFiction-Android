@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * Manager for character icons.
+ *
  * @author Yawkat
  */
 @RequiredArgsConstructor

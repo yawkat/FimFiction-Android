@@ -5,6 +5,8 @@ import android.content.Intent;
 import at.yawk.fimfiction.data.SearchParameters;
 
 /**
+ * Helper extension that provides methods for replacing it's owning activity with new activities.
+ *
  * @author Jonas Konrad (yawkat)
  */
 public class ActivityHelper extends Helper {

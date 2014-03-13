@@ -16,6 +16,8 @@ import lombok.extern.log4j.Log4j;
 import org.xml.sax.SAXException;
 
 /**
+ * Wrapper class for FimFiction-Java search functions.
+ *
  * @author Jonas Konrad (yawkat)
  */
 @Log4j

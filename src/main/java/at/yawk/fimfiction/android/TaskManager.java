@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.log4j.Log4j;
 
 /**
+ * Task Executor that supports invalidating tasks.
+ *
  * @author Jonas Konrad (yawkat)
  */
 @Log4j

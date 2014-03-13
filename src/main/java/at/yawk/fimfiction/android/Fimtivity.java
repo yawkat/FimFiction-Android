@@ -3,6 +3,8 @@ package at.yawk.fimfiction.android;
 import android.app.Activity;
 
 /**
+ * Base Activity subclass used for easy access to Helper instances.
+ *
  * @author Yawkat
  */
 public abstract class Fimtivity extends Activity {

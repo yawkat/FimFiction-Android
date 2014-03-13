@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * Activity that is opened on launch. Will log in if necessary, might ask the user for credentials. After login is
+ * complete, opens the unread display.
+ *
  * @author Jonas Konrad (yawkat)
  */
 public class LoginActivity extends Fimtivity {

@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 /**
+ * View factory to display information about a story.
+ *
  * @author Yawkat
  */
 @Log4j

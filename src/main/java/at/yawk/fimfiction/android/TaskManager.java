@@ -1,6 +1,5 @@
 package at.yawk.fimfiction.android;
 
-import android.util.Log;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -9,10 +8,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Jonas Konrad (yawkat)
  */
+@Log4j
 public class TaskManager {
     private final Executor executor =
             new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
@@ -31,16 +32,15 @@ public class TaskManager {
                 Task task = itr.next();
                 task.checkForInterrupt();
                 if (!task.isValid()) {
-                    Log.d(Constants.TAG, "Removing now invalid Task from task queue (" + tasks.size() + " remaining)");
+                    log.debug("Removing now invalid Task from task queue (" + tasks.size() + " remaining)");
                     itr.remove();
                 }
             }
-        } catch (Exception e) {
-            Log.e(Constants.TAG, "Failed while interrupting scheduled tasks", e);
-        }
+        } catch (Exception e) { log.error("Failed while interrupting scheduled tasks", e); }
     }
 }
 
+@Log4j
 class Task implements Runnable {
     private final Helper owner;
     private final Runnable action;
@@ -60,7 +60,7 @@ class Task implements Runnable {
             try {
                 action.run();
             } catch (Throwable t) {
-                Log.e(Constants.TAG, "Failed to execute task", t);
+                log.error("Failed to execute task", t);
             } finally {
                 Thread.interrupted();
                 runningThread = null;

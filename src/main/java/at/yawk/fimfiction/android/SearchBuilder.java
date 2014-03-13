@@ -1,6 +1,5 @@
 package at.yawk.fimfiction.android;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -11,10 +10,12 @@ import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Yawkat
  */
+@Log4j
 @RequiredArgsConstructor
 public abstract class SearchBuilder {
     private final SearchParameters defaults;
@@ -85,7 +86,7 @@ public abstract class SearchBuilder {
                                                                                                         .toString())));
                 } catch (NumberFormatException ignored) {}
                 parameters.set(SearchParameters.SearchParameter.CHARACTERS_INCLUDED, l.getCharacters());
-                Log.d(Constants.TAG, "Search " + parameters);
+                log.debug("Search " + parameters);
                 openSearch(parameters);
             }
         });

@@ -1,6 +1,5 @@
 package at.yawk.fimfiction.android;
 
-import android.util.Log;
 import at.yawk.fimfiction.core.Search;
 import at.yawk.fimfiction.core.SearchUrl;
 import at.yawk.fimfiction.data.Optional;
@@ -13,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j;
 import org.xml.sax.SAXException;
 
 /**
  * @author Jonas Konrad (yawkat)
  */
+@Log4j
 public class SearchView {
     private final Helper helper;
     private final SearchUrl.CompiledSearchParameters parameters;
@@ -56,7 +57,7 @@ public class SearchView {
                                                 });
         stories.addAll(storyList);
         hasMore = !(storyList/*.isEmpty() replaced for performance */.size() < 10);
-        Log.d(Constants.TAG, "Loaded data on page " + page + " (" + storyList.size() + " " + getStories().size() + ")");
+        log.debug("Loaded data on page " + page + " (" + storyList.size() + " " + getStories().size() + ")");
     }
 
     public synchronized void loadMoreData() {
@@ -64,7 +65,7 @@ public class SearchView {
             loadMoreData(page);
             page++;
         } catch (Exception e) {
-            Log.e(Constants.TAG, "Could not load more data on page " + page, e);
+            log.error("Could not load more data on page " + page, e);
             if (e instanceof SAXException) {
                 page++;
             } else {

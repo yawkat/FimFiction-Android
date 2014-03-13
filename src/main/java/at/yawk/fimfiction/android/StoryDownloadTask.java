@@ -1,7 +1,6 @@
 package at.yawk.fimfiction.android;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import at.yawk.fimfiction.core.Download;
 import at.yawk.fimfiction.data.Story;
 import java.io.File;
@@ -10,10 +9,12 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import lombok.Value;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Yawkat
  */
+@Log4j
 public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, StoryDownloadTask.Progress, Boolean> {
     @Override
     protected Boolean doInBackground(Params... params) {
@@ -28,9 +29,8 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
             int max = con.getContentLength();
 
             if (isCancelled()) { return false; }
-            Log.d(Constants.TAG,
-                  "Downloading " + story.get(Story.StoryKey.ID) + " (len=" + max + " ex=" + target.isFile() +
-                  " exlen=" + target.length() + ")");
+            log.debug("Downloading " + story.get(Story.StoryKey.ID) + " (len=" + max + " ex=" + target.isFile() +
+                      " exlen=" + target.length() + ")");
             if (target.isFile() && Math.abs(target.length() - max) < 10) { return true; }
 
             target.getParentFile().mkdirs();
@@ -52,10 +52,10 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
             if (!successful) {
                 target.delete();
             }
-            Log.d(Constants.TAG, "Downloaded " + story.get(Story.StoryKey.ID) + " (success=" + successful + ")");
+            log.debug("Downloaded " + story.get(Story.StoryKey.ID) + " (success=" + successful + ")");
             return successful;
         } catch (Exception e) {
-            Log.e(Constants.TAG, "Could not download " + story.get(Story.StoryKey.ID), e);
+            log.error("Could not download " + story.get(Story.StoryKey.ID), e);
         }
         return false;
     }

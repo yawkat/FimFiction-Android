@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class StoryList extends Fimtivity {
     private static final SearchParameters UNREAD = SearchParameters.createMutable()
                                                                    .set(SearchParameters.SearchParameter.ORDER,
@@ -71,7 +72,7 @@ public class StoryList extends Fimtivity {
                         }
                     }
                 }
-                Log.d(Constants.TAG, "We got interrupted, aborting!");
+                log.debug("We got interrupted, aborting!");
             }
 
             private boolean step() {
@@ -110,7 +111,7 @@ public class StoryList extends Fimtivity {
         }
         boolean ndone = !view.hasMore();
         if (done != ndone) {
-            if (ndone) { Log.d(Constants.TAG, "No more data!"); }
+            if (ndone) { log.debug("No more data!"); }
             done = ndone;
             updateContent();
         }
@@ -123,13 +124,13 @@ public class StoryList extends Fimtivity {
             Iterator<Story> itr = content.iterator();
             while (itr.hasNext()) {
                 Story story = itr.next();
-                Log.e(Constants.TAG, story.toString());
+                log.debug(story.toString());
                 if (story.getBoolean(Story.StoryKey.SEX) &&
                     story.get(Story.StoryKey.CONTENT_RATING) == ContentRating.MATURE) {
                     itr.remove();
                 }
             }
-            Log.e(Constants.TAG, "page done");
+            log.debug("page done");
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -141,7 +142,7 @@ public class StoryList extends Fimtivity {
 
     @SuppressWarnings("unchecked")
     private void setContent(List<Story> content) {
-        Log.d(Constants.TAG, "Updating display (done=" + done + ", content.length=" + content.size() + ")");
+        log.debug("Updating display (done=" + done + ", content.length=" + content.size() + ")");
         ListView v = (ListView) findViewById(R.id.stories);
         if (v.getAdapter() == null) {
             v.setAdapter(new ArrayAdapter<Story>(this, 0) {

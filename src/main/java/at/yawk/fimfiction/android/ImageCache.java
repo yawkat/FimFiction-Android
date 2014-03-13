@@ -2,15 +2,15 @@ package at.yawk.fimfiction.android;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import java.io.*;
 import java.net.URL;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Yawkat
  */
-
-public class ImageCache  {
+@Log4j
+public class ImageCache {
     private final File dir;
 
     ImageCache(File dir) { this.dir = dir; }
@@ -20,9 +20,7 @@ public class ImageCache  {
         if (b != null) { return b; }
         try {
             loadImage(url);
-        } catch (Exception e) {
-            Log.e(Constants.TAG, "Could not download image " + file(url), e);
-        }
+        } catch (Exception e) { log.warn("Could not download image " + file(url), e); }
         return getCachedImage(url);
     }
 
@@ -31,9 +29,7 @@ public class ImageCache  {
             if (file(url).exists()) {
                 return BitmapFactory.decodeFile(file(url).getAbsolutePath());
             }
-        } catch (Exception e) {
-            Log.e(Constants.TAG, "Could not load image " + file(url) + " from cache", e);
-        }
+        } catch (Exception e) { log.warn("Could not load image " + file(url) + " from cache", e); }
         return null;
     }
 

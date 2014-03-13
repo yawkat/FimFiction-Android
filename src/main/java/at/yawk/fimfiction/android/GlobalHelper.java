@@ -2,8 +2,10 @@ package at.yawk.fimfiction.android;
 
 import android.content.Context;
 import at.yawk.fimfiction.net.SessionManager;
+import de.mindpipe.android.logging.log4j.LogConfigurator;
 import java.io.File;
 import lombok.Getter;
+import org.apache.log4j.Level;
 
 /**
  * @author Jonas Konrad (yawkat)
@@ -17,7 +19,14 @@ public class GlobalHelper extends Helper {
         return instance;
     }
 
-    private GlobalHelper(Context context) { super(context); }
+    private GlobalHelper(Context context) {
+        super(context);
+
+        LogConfigurator l = new LogConfigurator();
+        l.setFileName(new File(baseDir(), "logs/fimfiction-android.log").getAbsolutePath());
+        l.setRootLevel(Level.DEBUG);
+        l.configure();
+    }
 
     private final TaskManager taskManager = new TaskManager();
     private final CharacterManager characterManager = new CharacterManager(this);

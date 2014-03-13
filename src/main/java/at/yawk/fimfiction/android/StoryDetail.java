@@ -2,7 +2,6 @@ package at.yawk.fimfiction.android;
 
 import android.graphics.Bitmap;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,10 +14,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author Yawkat
  */
+@Log4j
 @RequiredArgsConstructor
 public class StoryDetail {
     private Runnable listUpdateCallback = new Runnable() {
@@ -51,7 +52,7 @@ public class StoryDetail {
                             FavoriteState n = story.<FavoriteState>get(Story.StoryKey.FAVORITE_STATE).isFavorited() ?
                                     FavoriteState.NOT_FAVORITED :
                                     FavoriteState.FAVORITED;
-                            Log.d(Constants.TAG, "Marking " + story.getInt(Story.StoryKey.ID) + " as " + n);
+                            log.debug("Marking " + story.getInt(Story.StoryKey.ID) + " as " + n);
                             story.set(AccountActions.setFavorite(helper.getSession().getHttpClient(), story, n));
                             if (root.getHandler() != null) {
                                 root.getHandler().post(new Runnable() {
@@ -64,9 +65,7 @@ public class StoryDetail {
                                 });
                             }
                         } catch (Exception e) {
-                            Log.e(Constants.TAG,
-                                  "Could not change favorite status for " + story.getInt(Story.StoryKey.ID),
-                                  e);
+                            log.error("Could not change favorite status for " + story.getInt(Story.StoryKey.ID), e);
                         }
                     }
                 });
@@ -81,8 +80,7 @@ public class StoryDetail {
                     public void run() {
                         try {
                             boolean readLater = !story.getBoolean(Story.StoryKey.READ_LATER_STATE);
-                            Log.d(Constants.TAG,
-                                  "Marking " + story.get(Story.StoryKey.ID) + " as readLater=" + readLater);
+                            log.debug("Marking " + story.get(Story.StoryKey.ID) + " as readLater=" + readLater);
                             story.set(AccountActions.setReadLater(helper.getSession().getHttpClient(),
                                                                   story,
                                                                   readLater));
@@ -96,9 +94,7 @@ public class StoryDetail {
                                 });
                             }
                         } catch (Exception e) {
-                            Log.e(Constants.TAG,
-                                  "Could not change read later status for " + story.get(Story.StoryKey.ID),
-                                  e);
+                            log.error("Could not change read later status for " + story.get(Story.StoryKey.ID), e);
                         }
                     }
                 }
@@ -160,9 +156,8 @@ public class StoryDetail {
                                     });
                                 }
                             } catch (Exception e) {
-                                Log.e(Constants.TAG,
-                                      "Could not toggle read status for " + chapter.getInt(Chapter.ChapterKey.ID),
-                                      e);
+                                log.error("Could not toggle read status for " + chapter.getInt(Chapter.ChapterKey.ID),
+                                          e);
                             }
                         }
                     });

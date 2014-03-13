@@ -1,6 +1,5 @@
 package at.yawk.fimfiction.android;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +14,28 @@ import at.yawk.fimfiction.data.User;
 /**
  * @author Yawkat
  */
-public abstract class SearchBuilder implements Constants {
+public abstract class SearchBuilder {
     private final SearchParameters defaults;
 
-    protected SearchBuilder(final SearchParameters defaults) {
+    protected SearchBuilder(SearchParameters defaults) {
         this.defaults = defaults;
     }
 
     protected abstract void openSearch(SearchParameters parameters);
 
-    public View createView(Activity context) {
-        final View root = context.getLayoutInflater().inflate(R.layout.search, null);
+    public View createView(Helper helper) {
+        final View root = helper.layoutInflater().inflate(R.layout.search, null);
 
         /* TODO
 
-        ((CheckBox) root.findViewById(R.id.favorite)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter.FAVORITED,
+        ((CheckBox) root.findViewById(R.id.favorite)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter
+        .FAVORITED,
                                                                                      false));
-        ((CheckBox) root.findViewById(R.id.unread)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter.UNREAD,
+        ((CheckBox) root.findViewById(R.id.unread)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter
+        .UNREAD,
                                                                                    false));
-        ((CheckBox) root.findViewById(R.id.readlater)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter.READ_LATER,
+        ((CheckBox) root.findViewById(R.id.readlater)).setChecked(defaults.getBoolean(SearchParameters
+        .SearchParameter.READ_LATER,
                                                                                       false));
         ((CheckBox) root.findViewById(R.id.gore)).setChecked(defaults.getBoolean(SearchParameters.SearchParameter.GORE,
                                                                                  false));
@@ -43,18 +45,20 @@ public abstract class SearchBuilder implements Constants {
                                                                               ""));
         int uv = defaults.getInt(SearchParameters.SearchParameter.USER, -1);
         if (uv != -1) { ((EditText) root.findViewById(R.id.author)).setText(Integer.toString(uv)); }
-        ((Spinner) root.findViewById(R.id.content_rating)).setSelection(defaults.<ContentRating>get(SearchParameters.SearchParameter.CONTENT_RATING)
+        ((Spinner) root.findViewById(R.id.content_rating)).setSelection(defaults.<ContentRating>get(SearchParameters
+        .SearchParameter.CONTENT_RATING)
                                                                                 .ordinal());
-        ((Spinner) root.findViewById(R.id.order)).setSelection(defaults.<Order>get(SearchParameters.SearchParameter.ORDER)
+        ((Spinner) root.findViewById(R.id.order)).setSelection(defaults.<Order>get(SearchParameters.SearchParameter
+        .ORDER)
                                                                        .ordinal());
 
         */
 
-        final Characters.CharacterList l = Characters.createCharacterList(context, true);
+        final CharacterManager.CharacterList l = helper.getCharacterManager().createCharacterList(true);
         ((ViewGroup) root.findViewById(R.id.character_incl_container)).addView(l.getView());
         root.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
                 SearchParameters parameters = defaults.mutableCopy();
                 parameters.set(SearchParameters.SearchParameter.FAVORITED,
                                ((CheckBox) root.findViewById(R.id.favorite)).isChecked());
@@ -83,7 +87,7 @@ public abstract class SearchBuilder implements Constants {
                                                                                                         .toString())));
                 } catch (NumberFormatException ignored) {}
                 parameters.set(SearchParameters.SearchParameter.CHARACTERS_INCLUDED, l.getCharacters());
-                Log.d(TAG, "Search " + parameters);
+                Log.d(Constants.TAG, "Search " + parameters);
                 openSearch(parameters);
             }
         });

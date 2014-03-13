@@ -23,8 +23,8 @@ public class LoginActivity extends Fimtivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         boolean allowAutoLogin = getIntent().getBooleanExtra("autoLogin", true);
-        String username = getSharedPreferences(PREFERENCES, MODE_PRIVATE).getString("username", null);
-        String password = getSharedPreferences(PREFERENCES, MODE_PRIVATE).getString("password", null);
+        String username = helper().getPreferences().getString("username", null);
+        String password = helper().getPreferences().getString("password", null);
         if (username != null) {
             ((TextView) findViewById(R.id.username)).setText(username);
         }
@@ -33,7 +33,7 @@ public class LoginActivity extends Fimtivity {
         }
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
                 String username = ((TextView) findViewById(R.id.username)).getText().toString();
                 String password = ((TextView) findViewById(R.id.password)).getText().toString();
                 boolean save = ((CheckBox) findViewById(R.id.remember)).isChecked();
@@ -56,7 +56,7 @@ public class LoginActivity extends Fimtivity {
         loading.setIndeterminate(true);
         loading.setCancelable(false);
         loading.show();
-        execute(new Runnable() {
+        helper().executeTask(new Runnable() {
             @Override
             public void run() {
                 final AtomicReference<SessionActions.LoginStatus> status =
@@ -64,7 +64,7 @@ public class LoginActivity extends Fimtivity {
                 while (true) {
                     if (Thread.currentThread().isInterrupted()) { return; }
                     try {
-                        status.set(SessionActions.login(session.getHttpClient(), username, password));
+                        status.set(SessionActions.login(helper().getSession().getHttpClient(), username, password));
                         break;
                     } catch (final IOException e) {
                         LoginActivity.this.runOnUiThread(new Runnable() {
@@ -89,7 +89,8 @@ public class LoginActivity extends Fimtivity {
                         if (status.get() == SessionActions.LoginStatus.SUCCESSFUL) {
                             attemptedLogin = true;
                             if (save) {
-                                getSharedPreferences(PREFERENCES, MODE_PRIVATE).edit()
+                                helper().getPreferences()
+                                        .edit()
                                         .putString("username", username)
                                         .putString("password", password)
                                         .commit();
@@ -123,6 +124,6 @@ public class LoginActivity extends Fimtivity {
     private void skipToRootSearch() {
         Intent intent = new Intent();
         intent.setClass(LoginActivity.this, StoryList.class);
-        startIntent(intent, true);
+        helper().openActivity(intent, true);
     }
 }

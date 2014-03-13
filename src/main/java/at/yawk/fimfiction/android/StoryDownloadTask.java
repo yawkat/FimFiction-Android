@@ -13,10 +13,9 @@ import java.net.URLConnection;
 /**
  * @author Yawkat
  */
-public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, StoryDownloadTask.Progress, Boolean>
-        implements Constants {
+public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, StoryDownloadTask.Progress, Boolean> {
     @Override
-    protected Boolean doInBackground(final Params... params) {
+    protected Boolean doInBackground(Params... params) {
         assert params.length == 1;
         Story story = params[0].getStory();
         File target = params[0].getTarget();
@@ -28,8 +27,9 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
             int max = con.getContentLength();
 
             if (isCancelled()) { return false; }
-            Log.d(TAG, "Downloading " + story.get(Story.StoryKey.ID) + " (len=" + max + " ex=" + target.isFile() +
-                       " exlen=" + target.length() + ")");
+            Log.d(Constants.TAG,
+                  "Downloading " + story.get(Story.StoryKey.ID) + " (len=" + max + " ex=" + target.isFile() +
+                  " exlen=" + target.length() + ")");
             if (target.isFile() && Math.abs(target.length() - max) < 10) { return true; }
 
             target.getParentFile().mkdirs();
@@ -51,10 +51,10 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
             if (!successful) {
                 target.delete();
             }
-            Log.d(TAG, "Downloaded " + story.get(Story.StoryKey.ID) + " (success=" + successful + ")");
+            Log.d(Constants.TAG, "Downloaded " + story.get(Story.StoryKey.ID) + " (success=" + successful + ")");
             return successful;
         } catch (Exception e) {
-            Log.e(TAG, "Could not download " + story.get(Story.StoryKey.ID), e);
+            Log.e(Constants.TAG, "Could not download " + story.get(Story.StoryKey.ID), e);
         }
         return false;
     }
@@ -63,7 +63,7 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
         private final Story story;
         private final File target;
 
-        public Params(final Story story, final File target) {
+        public Params(Story story, File target) {
             this.story = story;
             this.target = target;
         }
@@ -81,7 +81,7 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
         private final int current;
         private final int max;
 
-        public Progress(final int current, final int max) {
+        public Progress(int current, int max) {
             this.current = current;
             this.max = max;
         }

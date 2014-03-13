@@ -14,7 +14,7 @@ import com.google.gson.JsonParser;
 public class ParamReader implements Parcelable {
     public static final Creator<ParamReader> CREATOR = new Creator<ParamReader>() {
         @Override
-        public ParamReader createFromParcel(final Parcel source) {
+        public ParamReader createFromParcel(Parcel source) {
             String title = source.readString();
 
             JsonObject json = new JsonParser().parse(source.readString()).getAsJsonObject();
@@ -27,7 +27,7 @@ public class ParamReader implements Parcelable {
         }
 
         @Override
-        public ParamReader[] newArray(final int size) {
+        public ParamReader[] newArray(int size) {
             return new ParamReader[size];
         }
     };
@@ -35,7 +35,7 @@ public class ParamReader implements Parcelable {
     private final SearchParameters parameters;
     private final String title;
 
-    public ParamReader(final SearchParameters parameters, String title) {
+    public ParamReader(SearchParameters parameters, String title) {
         this.parameters = parameters;
         this.title = title;
     }
@@ -54,7 +54,7 @@ public class ParamReader implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(final Parcel dest, final int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
 
         Serializer serializer = new Serializer();

@@ -10,12 +10,10 @@ import java.net.URL;
  * @author Yawkat
  */
 
-public class ImageCache implements Constants {
-    public static ImageCache instance;
-
+public class ImageCache  {
     private final File dir;
 
-    public ImageCache(File dir) { this.dir = dir; }
+    ImageCache(File dir) { this.dir = dir; }
 
     public synchronized Bitmap getImage(URL url) {
         Bitmap b = getCachedImage(url);
@@ -23,7 +21,7 @@ public class ImageCache implements Constants {
         try {
             loadImage(url);
         } catch (Exception e) {
-            Log.e(TAG, "Could not download image " + file(url), e);
+            Log.e(Constants.TAG, "Could not download image " + file(url), e);
         }
         return getCachedImage(url);
     }
@@ -34,7 +32,7 @@ public class ImageCache implements Constants {
                 return BitmapFactory.decodeFile(file(url).getAbsolutePath());
             }
         } catch (Exception e) {
-            Log.e(TAG, "Could not load image " + file(url) + " from cache", e);
+            Log.e(Constants.TAG, "Could not load image " + file(url) + " from cache", e);
         }
         return null;
     }

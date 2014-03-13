@@ -59,7 +59,7 @@ public class StoryList extends Fimtivity {
         }
         setParams(r.getParameters());
         setTitle(r.getTitle());
-        execute(new Runnable() {
+        helper().executeTask(new Runnable() {
             @Override
             public void run() {
                 while (!Thread.interrupted()) {
@@ -71,7 +71,7 @@ public class StoryList extends Fimtivity {
                         }
                     }
                 }
-                Log.d(TAG, "We got interrupted, aborting!");
+                Log.d(Constants.TAG, "We got interrupted, aborting!");
             }
 
             private boolean step() {
@@ -92,7 +92,7 @@ public class StoryList extends Fimtivity {
 
     private synchronized void setParams(SearchParameters params) {
         state = params;
-        view = new SearchView(params);
+        view = new SearchView(helper(), params);
         updateContent();
     }
 
@@ -110,7 +110,7 @@ public class StoryList extends Fimtivity {
         }
         boolean ndone = !view.hasMore();
         if (done != ndone) {
-            if (ndone) { Log.d(TAG, "No more data!"); }
+            if (ndone) { Log.d(Constants.TAG, "No more data!"); }
             done = ndone;
             updateContent();
         }
@@ -123,13 +123,13 @@ public class StoryList extends Fimtivity {
             Iterator<Story> itr = content.iterator();
             while (itr.hasNext()) {
                 Story story = itr.next();
-                Log.e(TAG, story.toString());
+                Log.e(Constants.TAG, story.toString());
                 if (story.getBoolean(Story.StoryKey.SEX) &&
                     story.get(Story.StoryKey.CONTENT_RATING) == ContentRating.MATURE) {
                     itr.remove();
                 }
             }
-            Log.e(TAG, "page done");
+            Log.e(Constants.TAG, "page done");
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -141,7 +141,7 @@ public class StoryList extends Fimtivity {
 
     @SuppressWarnings("unchecked")
     private void setContent(List<Story> content) {
-        Log.d(TAG, "Updating display (done=" + done + ", content.length=" + content.size() + ")");
+        Log.d(Constants.TAG, "Updating display (done=" + done + ", content.length=" + content.size() + ")");
         ListView v = (ListView) findViewById(R.id.stories);
         if (v.getAdapter() == null) {
             v.setAdapter(new ArrayAdapter<Story>(this, 0) {
@@ -151,7 +151,7 @@ public class StoryList extends Fimtivity {
                         convertView = getLayoutInflater().inflate(done ? R.layout.done : R.layout.loading, null);
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(final View v) {
+                            public void onClick(View v) {
                                 // force load one page
                                 skipLoadChecks = true;
                             }
@@ -166,19 +166,21 @@ public class StoryList extends Fimtivity {
                         convertView = getLayoutInflater().inflate(R.layout.story, null);
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(final View v) {
+                            public void onClick(View v) {
                                 download(story);
                             }
                         });
                         convertView.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
-                            public boolean onLongClick(final View v) {
+                            public boolean onLongClick(View v) {
                                 detail(story);
                                 return true;
                             }
                         });
-                        ((TextView) convertView.findViewById(R.id.title)).setText(story.getString(Story.StoryKey.TITLE));
-                        ((TextView) convertView.findViewById(R.id.chapters)).setText(Integer.toString(story.getInt(Story.StoryKey.CHAPTER_COUNT)));
+                        ((TextView) convertView.findViewById(R.id.title)).setText(story.getString(Story.StoryKey
+                                                                                                          .TITLE));
+                        ((TextView) convertView.findViewById(R.id.chapters)).setText(Integer.toString(story.getInt
+                                (Story.StoryKey.CHAPTER_COUNT)));
                         ((TextView) convertView.findViewById(R.id.read)).setText(Integer.toString(read));
                     }
                     return convertView;
@@ -190,7 +192,7 @@ public class StoryList extends Fimtivity {
         ((ArrayAdapter<Story>) v.getAdapter()).add(null); // progress
     }
 
-    private void detail(final Story story) {
+    private void detail(Story story) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setCancelable(true);
         StoryDetail storyDetail = new StoryDetail(story);
@@ -200,7 +202,7 @@ public class StoryList extends Fimtivity {
                 updateContent();
             }
         });
-        dialog.setView(storyDetail.createView(this));
+        dialog.setView(storyDetail.createView(helper()));
         AlertDialog theDialog = dialog.create();
         theDialog.show();
     }
@@ -210,12 +212,12 @@ public class StoryList extends Fimtivity {
         fileBuilder.append("stories/");
         fileBuilder.append(Files.escape(story.getString(Story.StoryKey.TITLE)));
         fileBuilder.append(".epub");
-        final File target = new File(((BrowserApp) getApplication()).getSaveDir(), fileBuilder.toString());
+        final File target = new File(helper().baseDir(), fileBuilder.toString());
         new ProgressStoryDownloadTask(this) {
             @Override
-            protected void onPostExecute(final Boolean result) {
+            protected void onPostExecute(Boolean result) {
                 if (result) {
-                    final Intent intent = new Intent();
+                    Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.fromFile(target),
                                           MimeTypeMap.getSingleton().getMimeTypeFromExtension("epub"));
@@ -227,16 +229,16 @@ public class StoryList extends Fimtivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
         menu.findItem(R.id.unread).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                execute(new Runnable() {
+            public boolean onMenuItemClick(MenuItem item) {
+                helper().executeTask(new Runnable() {
                     @Override
                     public void run() {
-                        openParams(UNREAD, R.string.unread);
+                        helper().openSearchActivity(UNREAD, R.string.unread);
                     }
                 });
                 return true;
@@ -244,11 +246,11 @@ public class StoryList extends Fimtivity {
         });
         menu.findItem(R.id.readlater).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                execute(new Runnable() {
+            public boolean onMenuItemClick(MenuItem item) {
+                helper().executeTask(new Runnable() {
                     @Override
                     public void run() {
-                        openParams(READ_LATER, R.string.readlater);
+                        helper().openSearchActivity(READ_LATER, R.string.readlater);
                     }
                 });
                 return true;
@@ -256,11 +258,11 @@ public class StoryList extends Fimtivity {
         });
         menu.findItem(R.id.favorite).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                execute(new Runnable() {
+            public boolean onMenuItemClick(MenuItem item) {
+                helper().executeTask(new Runnable() {
                     @Override
                     public void run() {
-                        openParams(FAVORITE, R.string.favorites);
+                        helper().openSearchActivity(FAVORITE, R.string.favorites);
                     }
                 });
                 return true;
@@ -268,19 +270,19 @@ public class StoryList extends Fimtivity {
         });
         menu.findItem(R.id.search).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
+            public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), SearchBuilderActivity.class);
                 if (!state.equals(FAVORITE) && !state.equals(READ_LATER) && !state.equals(UNREAD)) {
                     intent.putExtra("defaults", new ParamReader(state, "Search"));
                 }
-                startIntent(intent, false);
+                helper().openActivity(intent, false);
                 return true;
             }
         });
         menu.findItem(R.id.mature).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
+            public boolean onMenuItemClick(MenuItem item) {
                 getPreferences(MODE_PRIVATE).edit().putBoolean("mature", !showMS()).commit();
                 item.setTitle(showMS() ? R.string.ms_hide : R.string.ms_show);
                 updateContent();
@@ -290,11 +292,11 @@ public class StoryList extends Fimtivity {
         menu.findItem(R.id.mature).setTitle(showMS() ? R.string.ms_hide : R.string.ms_show);
         menu.findItem(R.id.switch_account).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(final MenuItem item) {
+            public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent();
                 intent.setClass(StoryList.this, LoginActivity.class);
                 intent.putExtra("autoLogin", false);
-                startIntent(intent, true);
+                helper().openActivity(intent, true);
                 return true;
             }
         });

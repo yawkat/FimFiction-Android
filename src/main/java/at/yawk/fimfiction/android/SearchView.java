@@ -18,7 +18,8 @@ import org.xml.sax.SAXException;
 /**
  * @author Jonas Konrad (yawkat)
  */
-public class SearchView implements Constants {
+public class SearchView {
+    private final Helper helper;
     private final SearchUrl.CompiledSearchParameters parameters;
 
     private List<Story> stories;
@@ -27,10 +28,10 @@ public class SearchView implements Constants {
 
     private boolean relog = false;
 
-    public SearchView(final SearchParameters parameters) {
+    public SearchView(Helper helper, SearchParameters parameters) {
+        this.helper = helper;
         this.parameters = SearchUrl.CompiledSearchParameters.compile(parameters);
         reset();
-
     }
 
     public synchronized void reset() {
@@ -42,7 +43,7 @@ public class SearchView implements Constants {
     private synchronized void loadMoreData(int page) throws Exception {
         Search request = Search.create();
         request.parameters(parameters, page);
-        SearchResult result = request.search(session.getHttpClient());
+        SearchResult result = request.search(helper.getSession().getHttpClient());
         relog = result.has(SearchResult.SearchResultKey.LOGGED_IN_USER) &&
                 !result.<Optional>get(SearchResult.SearchResultKey.LOGGED_IN_USER).exists();
         List<Story> storyList = Lists.transform(result.<List<Story>>get(SearchResult.SearchResultKey.STORIES),
@@ -55,7 +56,7 @@ public class SearchView implements Constants {
                                                 });
         stories.addAll(storyList);
         hasMore = !(storyList/*.isEmpty() replaced for performance */.size() < 10);
-        Log.d(TAG, "Loaded data on page " + page + " (" + storyList.size() + " " + getStories().size() + ")");
+        Log.d(Constants.TAG, "Loaded data on page " + page + " (" + storyList.size() + " " + getStories().size() + ")");
     }
 
     public synchronized void loadMoreData() {
@@ -63,7 +64,7 @@ public class SearchView implements Constants {
             loadMoreData(page);
             page++;
         } catch (Exception e) {
-            Log.e(TAG, "Could not load more data on page " + page, e);
+            Log.e(Constants.TAG, "Could not load more data on page " + page, e);
             if (e instanceof SAXException) {
                 page++;
             } else {

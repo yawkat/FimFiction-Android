@@ -11,12 +11,12 @@ public class ProgressStoryDownloadTask extends StoryDownloadTask {
     private final Context context;
     private ProgressDialog dialog;
 
-    public ProgressStoryDownloadTask(final Context context) {
+    public ProgressStoryDownloadTask(Context context) {
         this.context = context;
     }
 
     @Override
-    protected void onPostExecute(final Boolean result) {
+    protected void onPostExecute(Boolean result) {
         dialog.hide();
         dialog = null;
     }
@@ -32,7 +32,7 @@ public class ProgressStoryDownloadTask extends StoryDownloadTask {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onCancel(final DialogInterface dialog) {
+            public void onCancel(DialogInterface dialog) {
                 cancel(false);
             }
         });
@@ -41,7 +41,7 @@ public class ProgressStoryDownloadTask extends StoryDownloadTask {
     }
 
     @Override
-    protected void onProgressUpdate(final Progress... values) {
+    protected void onProgressUpdate(Progress... values) {
         dialog.setIndeterminate(values[0].getMax() == -1);
         dialog.setMax(values[0].getMax());
         dialog.setProgress(values[0].getCurrent());

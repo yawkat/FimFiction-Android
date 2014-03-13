@@ -47,7 +47,7 @@ public class FlowLayout extends ViewGroup {
         boolean newLine = false;
         int spacing = 0;
 
-        final int count = getChildCount();
+        int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
@@ -90,7 +90,7 @@ public class FlowLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int count = getChildCount();
+        int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             LayoutParams lp = (LayoutParams) child.getLayoutParams();

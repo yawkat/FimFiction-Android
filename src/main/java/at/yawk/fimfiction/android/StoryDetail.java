@@ -14,20 +14,18 @@ import at.yawk.fimfiction.data.*;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Yawkat
  */
+@RequiredArgsConstructor
 public class StoryDetail {
     private Runnable listUpdateCallback = new Runnable() {
         @Override
         public void run() {}
     };
     private final Story story;
-
-    public StoryDetail(Story story) {
-        this.story = story;
-    }
 
     public void setListUpdateCallback(Runnable listUpdateCallback) {
         this.listUpdateCallback = listUpdateCallback;

@@ -7,17 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import at.yawk.fimfiction.data.FimCharacter;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Yawkat
  */
+@RequiredArgsConstructor
 public class CharacterManager {
     private final Helper helper;
-
-    public CharacterManager(Helper helper) { this.helper = helper; }
 
     public View createCharacterView(final FimCharacter character) {
         final View v = helper.layoutInflater().inflate(R.layout.character, null);
@@ -76,19 +76,12 @@ public class CharacterManager {
         return l;
     }
 
+    @RequiredArgsConstructor
     public static class CharacterList {
         private final Helper helper;
-        private final Set<FimCharacter> characters = new HashSet<FimCharacter>();
+        @Getter private final Set<FimCharacter> characters = new HashSet<FimCharacter>();
         private final boolean editable;
-        private final ViewGroup view;
-
-        public CharacterList(Helper helper, boolean editable, ViewGroup view) {
-            this.helper = helper;
-            this.editable = editable;
-            this.view = view;
-        }
-
-        public ViewGroup getView() { return view; }
+        @Getter private final ViewGroup view;
 
         private View addCharacterView(final FimCharacter character) {
             final View v = this.helper.getCharacterManager().createCharacterView(character);
@@ -113,7 +106,5 @@ public class CharacterManager {
         public void removeCharacter(FimCharacter character, View view) {
             if (characters.remove(character)) { this.view.removeView(view); }
         }
-
-        public Set<FimCharacter> getCharacters() { return Collections.unmodifiableSet(characters); }
     }
 }

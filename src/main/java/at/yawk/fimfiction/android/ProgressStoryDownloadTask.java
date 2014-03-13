@@ -3,17 +3,15 @@ package at.yawk.fimfiction.android;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Yawkat
  */
+@RequiredArgsConstructor
 public class ProgressStoryDownloadTask extends StoryDownloadTask {
     private final Context context;
     private ProgressDialog dialog;
-
-    public ProgressStoryDownloadTask(Context context) {
-        this.context = context;
-    }
 
     @Override
     protected void onPostExecute(Boolean result) {

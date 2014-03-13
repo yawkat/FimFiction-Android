@@ -7,10 +7,14 @@ import at.yawk.fimfiction.json.Deserializer;
 import at.yawk.fimfiction.json.Serializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Yawkat
  */
+@RequiredArgsConstructor
+@Getter
 public class ParamReader implements Parcelable {
     public static final Creator<ParamReader> CREATOR = new Creator<ParamReader>() {
         @Override
@@ -34,19 +38,6 @@ public class ParamReader implements Parcelable {
 
     private final SearchParameters parameters;
     private final String title;
-
-    public ParamReader(SearchParameters parameters, String title) {
-        this.parameters = parameters;
-        this.title = title;
-    }
-
-    public SearchParameters getParameters() {
-        return parameters;
-    }
-
-    public String getTitle() {
-        return title;
-    }
 
     @Override
     public int describeContents() {

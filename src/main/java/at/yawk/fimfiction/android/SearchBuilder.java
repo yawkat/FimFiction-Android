@@ -10,16 +10,14 @@ import at.yawk.fimfiction.data.ContentRating;
 import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.User;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Yawkat
  */
+@RequiredArgsConstructor
 public abstract class SearchBuilder {
     private final SearchParameters defaults;
-
-    protected SearchBuilder(SearchParameters defaults) {
-        this.defaults = defaults;
-    }
 
     protected abstract void openSearch(SearchParameters parameters);
 

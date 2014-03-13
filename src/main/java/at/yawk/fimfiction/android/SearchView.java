@@ -10,9 +10,9 @@ import at.yawk.fimfiction.data.Story;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.Getter;
 import org.xml.sax.SAXException;
 
 /**
@@ -22,11 +22,11 @@ public class SearchView {
     private final Helper helper;
     private final SearchUrl.CompiledSearchParameters parameters;
 
-    private List<Story> stories;
+    @Getter private List<Story> stories;
     private int page;
     private boolean hasMore;
 
-    private boolean relog = false;
+    @Getter private boolean relog = false;
 
     public SearchView(Helper helper, SearchParameters parameters) {
         this.helper = helper;
@@ -77,15 +77,7 @@ public class SearchView {
         }
     }
 
-    public List<Story> getStories() {
-        return Collections.unmodifiableList(stories);
-    }
-
     public boolean hasMore() {
         return hasMore;
-    }
-
-    public boolean isRelog() {
-        return relog;
     }
 }

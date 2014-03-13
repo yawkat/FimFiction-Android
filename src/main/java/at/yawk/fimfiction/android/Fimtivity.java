@@ -13,6 +13,6 @@ public abstract class Fimtivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        helper.shutdown();
+        helper().shutdown();
     }
 }

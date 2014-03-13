@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import lombok.Value;
 
 /**
  * @author Yawkat
@@ -59,39 +60,15 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
         return false;
     }
 
+    @Value
     public static class Params {
         private final Story story;
         private final File target;
-
-        public Params(Story story, File target) {
-            this.story = story;
-            this.target = target;
-        }
-
-        public Story getStory() {
-            return story;
-        }
-
-        public File getTarget() {
-            return target;
-        }
     }
 
+    @Value
     public static class Progress {
         private final int current;
         private final int max;
-
-        public Progress(int current, int max) {
-            this.current = current;
-            this.max = max;
-        }
-
-        public int getCurrent() {
-            return current;
-        }
-
-        public int getMax() {
-            return max;
-        }
     }
 }

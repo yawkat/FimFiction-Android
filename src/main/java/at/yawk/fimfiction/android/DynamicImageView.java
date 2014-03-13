@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class DynamicImageView extends ImageView {
-
     public DynamicImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

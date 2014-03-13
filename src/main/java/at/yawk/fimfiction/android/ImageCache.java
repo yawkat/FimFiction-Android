@@ -41,7 +41,13 @@ public class ImageCache {
             file = file.substring(0, file.indexOf('?'));
         }
         String ext = file.indexOf('.') != -1 ? file.substring(file.lastIndexOf('.')) : file;
-        return new File(dir, url.hashCode() + ext);
+        return new File(dir, padLeftZeros(Integer.toHexString(url.hashCode()).toUpperCase()) + ext);
+    }
+
+    private static String padLeftZeros(String i) {
+        StringBuilder builder = new StringBuilder("00000000");
+        builder.replace(8 - i.length(), 8, i);
+        return builder.toString();
     }
 
     private void loadImage(URL url) throws IOException {

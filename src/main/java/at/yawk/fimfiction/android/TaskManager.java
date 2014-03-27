@@ -21,13 +21,13 @@ public class TaskManager {
             new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
     private final Collection<Task> tasks = Collections.newSetFromMap(new WeakHashMap<Task, Boolean>());
 
-    public void execute(Helper context, Runnable task) {
+    public synchronized void execute(Helper context, Runnable task) {
         Task taskElement = new Task(context, task);
         executor.execute(taskElement);
         tasks.add(taskElement);
     }
 
-    public void interruptScheduler() {
+    public synchronized void interruptScheduler() {
         try {
             Iterator<Task> itr = tasks.iterator();
             while (itr.hasNext()) {

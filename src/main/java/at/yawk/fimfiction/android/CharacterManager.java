@@ -41,7 +41,7 @@ public class CharacterManager {
         view.setImageBitmap(Bitmap.createScaledBitmap(image, image.getWidth() * 2, image.getHeight() * 2, false));
     }
 
-    public CharacterList createCharacterList(boolean editable, FimCharacter... defaults) {
+    public CharacterList createCharacterList(final Helper helper, boolean editable, FimCharacter... defaults) {
         ViewGroup v = (ViewGroup) helper.layoutInflater().inflate(R.layout.character_list, null);
         final CharacterList l = new CharacterList(helper, editable, v);
         if (editable) {
@@ -50,8 +50,8 @@ public class CharacterManager {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialog = new Dialog(v.getContext());
-                    CharacterList selection = createCharacterList(false);
+                    final Dialog dialog = new Dialog(helper.context());
+                    CharacterList selection = createCharacterList(helper, false);
                     for (final FimCharacter character : FimCharacter.DefaultCharacter.values()) {
                         if (!l.getCharacters().contains(character)) {
                             View view = selection.addCharacterView(character);

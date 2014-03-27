@@ -78,29 +78,34 @@ public class StoryDetail {
             @Override
             public void onClick(View v) {
                 helper.executeTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            boolean readLater = !story.getBoolean(Story.StoryKey.READ_LATER_STATE);
-                            log.debug("Marking " + story.get(Story.StoryKey.ID) + " as readLater=" + readLater);
-                            story.set(AccountActions.setReadLater(helper.getSession().getHttpClient(),
-                                                                  story,
-                                                                  readLater));
-                            if (root.getHandler() != null) {
-                                root.getHandler().post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        root.findViewById(R.id.readlater)
-                                            .setAlpha(story.getBoolean(Story.StoryKey.READ_LATER_STATE) ? 1 : 0.5F);
-                                    }
-                                });
-                            }
-                        } catch (Exception e) {
-                            log.error("Could not change read later status for " + story.get(Story.StoryKey.ID), e);
-                        }
-                    }
-                }
-
+                                       @Override
+                                       public void run() {
+                                           try {
+                                               boolean readLater = !story.getBoolean(Story.StoryKey.READ_LATER_STATE);
+                                               log.debug("Marking " + story.get(Story.StoryKey.ID) + " as readLater=" +
+                                                         readLater);
+                                               story.set(AccountActions.setReadLater(helper.getSession()
+                                                                                           .getHttpClient(),
+                                                                                     story,
+                                                                                     readLater));
+                                               if (root.getHandler() != null) {
+                                                   root.getHandler().post(new Runnable() {
+                                                       @Override
+                                                       public void run() {
+                                                           root.findViewById(R.id.readlater)
+                                                               .setAlpha(story.getBoolean(Story.StoryKey
+                                                                                                  .READ_LATER_STATE) ?
+                                                                                 1 :
+                                                                                 0.5F);
+                                                       }
+                                                   });
+                                               }
+                                           } catch (Exception e) {
+                                               log.error("Could not change read later status for " +
+                                                         story.get(Story.StoryKey.ID), e);
+                                           }
+                                       }
+                                   }
                 );
             }
         });
@@ -169,9 +174,10 @@ public class StoryDetail {
         }
         Set<FimCharacter> characters = story.get(Story.StoryKey.CHARACTERS);
         CharacterManager.CharacterList list = helper.getCharacterManager()
-                                                    .createCharacterList(false,
-                                                                         characters.toArray(new
-                                                                                                    FimCharacter[characters.size()]));
+                                                    .createCharacterList(helper,
+                                                                         false,
+                                                                         characters.toArray(new FimCharacter[characters.size()])
+                                                    );
         list.getView()
             .setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                              ViewGroup.LayoutParams.WRAP_CONTENT));

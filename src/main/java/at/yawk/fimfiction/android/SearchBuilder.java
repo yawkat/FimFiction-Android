@@ -55,7 +55,7 @@ public abstract class SearchBuilder {
 
         */
 
-        final CharacterManager.CharacterList l = helper.getCharacterManager().createCharacterList(true);
+        final CharacterManager.CharacterList l = helper.getCharacterManager().createCharacterList(helper, true);
         ((ViewGroup) root.findViewById(R.id.character_incl_container)).addView(l.getView());
         root.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +85,9 @@ public abstract class SearchBuilder {
                                    User.createMutable()
                                        .set(User.UserKey.ID,
                                             Integer.parseInt(((EditText) root.findViewById(R.id.author)).getText()
-                                                                                                        .toString())));
+                                                                                                        .toString())
+                                       )
+                    );
                 } catch (NumberFormatException ignored) {}
                 parameters.set(SearchParameters.SearchParameter.CHARACTERS_INCLUDED, l.getCharacters());
                 log.debug("Search " + parameters);

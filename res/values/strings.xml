@@ -34,6 +34,20 @@
         <item>Teen</item>
         <item>Mature</item>
     </array>
+    <array name="category">
+        <item>Romance</item>
+        <item>Tragedy</item>
+        <item>Sad</item>
+        <item>Dark</item>
+        <item>Comedy</item>
+        <item>Random</item>
+        <item>Crossover</item>
+        <item>Adventure</item>
+        <item>Slice of Life</item>
+        <item>Alternate Universe</item>
+        <item>Human</item>
+        <item>Anthro</item>
+    </array>
     <array name="order">
         <item>First Posted</item>
         <item>Hot</item>

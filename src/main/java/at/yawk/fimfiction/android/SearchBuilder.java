@@ -9,6 +9,8 @@ import at.yawk.fimfiction.data.ContentRating;
 import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.User;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -89,7 +91,13 @@ public abstract class SearchBuilder {
                                        )
                     );
                 } catch (NumberFormatException ignored) {}
-                parameters.set(SearchParameters.SearchParameter.CHARACTERS_INCLUDED, l.getCharacters());
+
+
+                parameters.set(SearchParameters.SearchParameter.CHARACTERS_INCLUDED,
+                               ImmutableSet.copyOf(l.getCharacters()));
+                parameters.set(SearchParameters.SearchParameter.CATEGORIES_INCLUDED,
+                               ImmutableSet.copyOf(l.getCategories()));
+
                 log.debug("Search " + parameters);
                 openSearch(parameters);
             }

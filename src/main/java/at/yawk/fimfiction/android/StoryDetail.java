@@ -12,7 +12,6 @@ import at.yawk.fimfiction.core.AccountActions;
 import at.yawk.fimfiction.data.*;
 import java.net.URL;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -87,7 +86,8 @@ public class StoryDetail {
                                                story.set(AccountActions.setReadLater(helper.getSession()
                                                                                            .getHttpClient(),
                                                                                      story,
-                                                                                     readLater));
+                                                                                     readLater
+                                               ));
                                                if (root.getHandler() != null) {
                                                    root.getHandler().post(new Runnable() {
                                                        @Override
@@ -172,12 +172,10 @@ public class StoryDetail {
             });
             ((ViewGroup) root.findViewById(R.id.chapters)).addView(chapterView);
         }
-        Set<FimCharacter> characters = story.get(Story.StoryKey.CHARACTERS);
-        CharacterManager.CharacterList list = helper.getCharacterManager()
-                                                    .createCharacterList(helper,
-                                                                         false,
-                                                                         characters.toArray(new FimCharacter[characters.size()])
-                                                    );
+        Iterable<FimCharacter> characters = story.get(Story.StoryKey.CHARACTERS);
+        Iterable<Category> categories = story.get(Story.StoryKey.CATEGORIES);
+        CharacterManager.CharacterList list =
+                helper.getCharacterManager().createCharacterList(helper, false, characters, categories);
         list.getView()
             .setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                              ViewGroup.LayoutParams.WRAP_CONTENT));

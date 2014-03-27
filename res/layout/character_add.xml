@@ -18,9 +18,9 @@
                 android:text="@string/plus"
                 style="@android:style/TextAppearance.DeviceDefault.Large"
                 android:layout_marginRight="4dp"
-                android:layout_width="wrap_content"
-                android:gravity="center_vertical"
                 android:height="32dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <TextView

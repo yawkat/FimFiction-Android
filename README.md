@@ -11,7 +11,12 @@ Aims
 - Stability: This app is made for the poor mobile internet I often have and provides a reliable access to the FimFiction website. It will handle connection issues appropriately.
 - Speed: This app caches a lot of data locally. This includes cover art (only downloaded on wifi) and the story EPUBs themselves.
 
-Setup
+Download
+--------
+
+[![Download](http://ci.yawk.at/job/FimFiction-Android/badge/icon)](http://ci.yawk.at/job/FimFiction-Android)
+
+Manual Setup
 -----
 
 - A different icon can be placed in res/drawable/icon.png . The default is a basic placeholder that doesn't look particulary good but will work for testing purposes.

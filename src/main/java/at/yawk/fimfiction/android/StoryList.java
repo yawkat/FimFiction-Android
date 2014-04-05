@@ -6,7 +6,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.Button;
 import at.yawk.fimfiction.data.SearchParameters;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
@@ -21,7 +23,8 @@ public class StoryList extends Fimtivity {
 
     private StoryListWorker worker;
 
-    private Map<Button, SearchParameters> categoryButtons = Maps.newHashMap();
+    private final Map<Button, SearchParameters> categoryButtons = Maps.newHashMap();
+    private final List<Button> sortedCategoryButtons = Lists.newArrayList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class StoryList extends Fimtivity {
 
     private void prepareListButton(Button button, final SearchParameters parameters) {
         categoryButtons.put(button, parameters);
+        sortedCategoryButtons.add(button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,13 +80,22 @@ public class StoryList extends Fimtivity {
         });
     }
 
-    private void updateListButton(Button button, SearchParameters parameters) {
-        button.setBackgroundColor(worker.getParameters().equals(parameters) ? 0xFF333333 : 0);
+    private void removeListButton(Button button) {
+        categoryButtons.remove(button);
+        sortedCategoryButtons.remove(button);
     }
 
     private void updateCategoryButtons() {
-        for (Map.Entry<Button, SearchParameters> entry : categoryButtons.entrySet()) {
-            updateListButton(entry.getKey(), entry.getValue());
+        int generated = 0;
+        for (Button button : sortedCategoryButtons) {
+            SearchParameters parameters = categoryButtons.get(button);
+            TranslatableText name = helper().getParameterManager().getNameOrNull(parameters);
+            if (name == null) {
+                button.setText(helper().context().getResources().getString(R.string.search_entry, ++generated));
+            } else {
+                name.assign(button);
+            }
+            button.setBackgroundColor(worker.getParameters().equals(parameters) ? 0xFF333333 : 0);
         }
     }
 
@@ -135,7 +148,7 @@ public class StoryList extends Fimtivity {
                         @Override
                         public void onClick(View view) {
                             searches.removeView(v);
-                            categoryButtons.remove(button);
+                            removeListButton(button);
                             if (worker.getParameters().equals(parameters)) {
                                 replaceParameters(helper().getParameterManager().getDefault(), false);
                             }

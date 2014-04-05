@@ -16,6 +16,7 @@
     <string name="gore_short">G</string>
     <string name="sex_short">S</string>
     <string name="search">Search</string>
+    <string name="search_entry"># %s</string>
     <string name="search_action">Search…</string>
     <string name="favorite">Favorite</string>
     <string name="character_icon">character name</string>

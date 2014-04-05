@@ -5,6 +5,7 @@ import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import com.google.common.collect.Maps;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  * @author Jonas Konrad (yawkat)
@@ -37,8 +38,14 @@ public class SearchParameterManager {
 
     public SearchParameters getDefault() { return buttons.get(R.id.unread); }
 
+    @Nullable
+    public TranslatableText getNameOrNull(SearchParameters parameters) {
+        return names.containsKey(parameters) ? TranslatableText.id(names.get(parameters)) : null;
+    }
+
     public TranslatableText getName(SearchParameters parameters) {
-        return TranslatableText.id(names.containsKey(parameters) ? names.get(parameters) : R.string.search);
+        TranslatableText orNull = getNameOrNull(parameters);
+        return orNull == null ? TranslatableText.id(R.string.search) : orNull;
     }
 
     public Map<Button, SearchParameters> findButtons(ActivityHelper helper) {

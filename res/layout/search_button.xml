@@ -10,7 +10,6 @@
             android:layout_alignParentLeft="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/search"
             style="@style/DrawerButton"/>
 
     <Button

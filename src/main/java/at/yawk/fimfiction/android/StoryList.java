@@ -180,6 +180,7 @@ public class StoryList extends Fimtivity {
                     searches.removeView(v);
                     removeListButton(button);
                     helper().getPreferences().getSearchConfig().remove(parameters);
+                    helper().getPreferences().save();
                     if (worker.getParameters().equals(parameters)) {
                         replaceParameters(helper().getParameterManager().getDefault(), false);
                     }

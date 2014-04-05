@@ -1,8 +1,11 @@
 package at.yawk.fimfiction.android;
 
+import static at.yawk.fimfiction.data.SearchParameters.SearchParameter.*;
+
 import android.widget.Button;
 import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
+import at.yawk.fimfiction.data.Timeframe;
 import com.google.common.collect.Maps;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -17,17 +20,38 @@ public class SearchParameterManager {
     { init(); }
 
     private void init() {
+        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(UNREAD, true).set(FAVORITED, true),
+            R.id.unread,
+            R.string.unread);
+        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(FAVORITED, true),
+            R.id.favorite,
+            R.string.favorite);
+        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(READ_LATER, true),
+            R.id.readlater,
+            R.string.readlater);
+        add(SearchParameters.createMutable().set(ORDER, Order.HOT), R.id.hot, R.string.hot);
+        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE), R.id.updates, R.string.updates);
         add(SearchParameters.createMutable()
-                            .set(SearchParameters.SearchParameter.ORDER, Order.UPDATE_DATE)
-                            .set(SearchParameters.SearchParameter.UNREAD, true)
-                            .set(SearchParameters.SearchParameter.FAVORITED, true), R.id.unread, R.string.unread);
-        add(SearchParameters.createMutable()
-                            .set(SearchParameters.SearchParameter.ORDER, Order.UPDATE_DATE)
-                            .set(SearchParameters.SearchParameter.FAVORITED, true), R.id.favorite, R.string.favorite);
-        add(SearchParameters.createMutable()
-                            .set(SearchParameters.SearchParameter.ORDER, Order.UPDATE_DATE)
-                            .set(SearchParameters.SearchParameter.READ_LATER, true), R.id.readlater, R.string.readlater
+                            .set(ORDER, Order.RATING)
+                            .set(PUBLISH_TIMEFRAME, Timeframe.DefaultTimeframe.ONE_DAY),
+            R.id.top_today,
+            R.string.top_today
         );
+        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(COMPLETED, true),
+            R.id.completed,
+            R.string.completed);
+        add(SearchParameters.createMutable().set(ORDER, Order.VIEW_COUNT), R.id.most_viewed, R.string.most_viewed);
+        add(SearchParameters.createMutable().set(ORDER, Order.RATING), R.id.top_all_time, R.string.top_all_time);
+        add(SearchParameters.createMutable()
+                            .set(ORDER, Order.RATING)
+                            .set(PUBLISH_TIMEFRAME, Timeframe.DefaultTimeframe.ONE_WEEK),
+            R.id.top_this_week,
+            R.string.top_this_week
+        );
+        add(SearchParameters.createMutable().set(ORDER, Order.WORD_COUNT), R.id.longest, R.string.longest);
+        add(SearchParameters.createMutable().set(ORDER, Order.COMMENT_COUNT),
+            R.id.most_comments,
+            R.string.most_comments);
     }
 
     private void add(SearchParameters parameters, int button, int name) {

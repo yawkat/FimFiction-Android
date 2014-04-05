@@ -77,6 +77,79 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_action"
                     style="@style/DrawerButton"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        style="@android:style/TextAppearance.Holo.Small"
+                        android:text="@string/other"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#b0b0b0"></View>
+
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/hot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/updates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/top_today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/completed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/most_viewed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/top_all_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/top_this_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/longest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
+
+            <Button
+                    android:id="@+id/most_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DrawerButton"/>
         </LinearLayout>
     </ScrollView>
 </android.support.v4.widget.DrawerLayout>

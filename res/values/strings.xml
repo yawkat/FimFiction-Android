@@ -30,6 +30,16 @@
     <string name="remember">Remember</string>
     <string name="login">Login</string>
     <string name="switch_account">Switch Account</string>
+    <string name="other">Other</string>
+    <string name="hot">Hot</string>
+    <string name="updates">Updates</string>
+    <string name="top_today">Top - Today</string>
+    <string name="completed">Completed</string>
+    <string name="most_viewed">Most Viewed</string>
+    <string name="top_all_time">Top - All Time</string>
+    <string name="top_this_week">Top - This Week</string>
+    <string name="longest">Longest</string>
+    <string name="most_comments">Most Comments</string>
     <array name="content_rating">
         <item>Any</item>
         <item>Everyone</item>

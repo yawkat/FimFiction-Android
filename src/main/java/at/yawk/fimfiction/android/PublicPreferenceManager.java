@@ -16,6 +16,7 @@ import lombok.extern.log4j.Log4j;
 public class PublicPreferenceManager {
     private final Helper helper;
     @Getter private final IdentifiableQueryConfig queryConfig = new IdentifiableQueryConfig(this);
+    @Getter private final CustomSearchConfig searchConfig = new CustomSearchConfig(this);
 
     @Getter private JsonObject config = new JsonObject();
 

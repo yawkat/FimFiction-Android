@@ -58,6 +58,10 @@ public class StoryList extends Fimtivity {
             }
         });
 
+        for (SearchParameters search : helper().getPreferences().getSearchConfig().get()) {
+            addSearch(search, false);
+        }
+
         replaceParameters(r.getParameters(), false);
 
         helper().<Button>view(R.id.search).setOnClickListener(new View.OnClickListener() {
@@ -152,26 +156,35 @@ public class StoryList extends Fimtivity {
         case REQUEST_CODE_SEARCH:
             if (resultCode == RESULT_OK) {
                 final SearchParameters parameters = data.<ParamReader>getParcelableExtra("parameters").getParameters();
-                if (!categoryButtons.containsValue(parameters)) {
-                    final View v = helper().layoutInflater().inflate(R.layout.search_button, null);
-                    final Button button = (Button) v.findViewById(R.id.search_button);
-                    prepareListButton(button, parameters);
-                    final ViewGroup searches = helper().<ViewGroup>view(R.id.searches);
-                    searches.addView(v);
-                    v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            searches.removeView(v);
-                            removeListButton(button);
-                            if (worker.getParameters().equals(parameters)) {
-                                replaceParameters(helper().getParameterManager().getDefault(), false);
-                            }
-                        }
-                    });
-                }
+                addSearch(parameters, true);
                 replaceParameters(parameters, false);
             }
             break;
+        }
+    }
+
+    private void addSearch(final SearchParameters parameters, boolean save) {
+        if (!categoryButtons.containsValue(parameters)) {
+            final View v = helper().layoutInflater().inflate(R.layout.search_button, null);
+            final Button button = (Button) v.findViewById(R.id.search_button);
+            prepareListButton(button, parameters);
+            if (save) {
+                helper().getPreferences().getSearchConfig().add(parameters);
+                helper().getPreferences().save();
+            }
+            final ViewGroup searches = helper().<ViewGroup>view(R.id.searches);
+            searches.addView(v);
+            v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    searches.removeView(v);
+                    removeListButton(button);
+                    helper().getPreferences().getSearchConfig().remove(parameters);
+                    if (worker.getParameters().equals(parameters)) {
+                        replaceParameters(helper().getParameterManager().getDefault(), false);
+                    }
+                }
+            });
         }
     }
 

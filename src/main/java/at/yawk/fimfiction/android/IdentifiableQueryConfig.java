@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import java.util.List;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -28,8 +29,14 @@ public class IdentifiableQueryConfig {
             preferenceManager.getConfig().get("queries").getAsJsonArray().add(new Serializer().serializeBundle(query));
             i = queries.size();
             queries.add(query);
+            log.info("Appending query #" + i + ": " + query);
         }
         return i;
+    }
+
+    @Nullable
+    public synchronized SearchParameters getQuery(int id) {
+        return id >= 0 && id < queries.size() ? queries.get(id) : null;
     }
 
     synchronized void load() {
@@ -40,5 +47,6 @@ public class IdentifiableQueryConfig {
                 queries.add(new Deserializer().deserializeBundle(element.getAsJsonObject(), SearchParameters.class));
             } catch (Exception e) { log.error(e); }
         }
+        log.info("Loaded " + queries.size() + " queries");
     }
 }

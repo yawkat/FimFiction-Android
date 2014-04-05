@@ -15,13 +15,6 @@ public class ActivityHelper extends Helper {
 
     public Activity activity() { return (Activity) context(); }
 
-    public void openSearchActivity(SearchParameters parameters) {
-        Intent intent = new Intent();
-        intent.setClass(context(), StoryList.class);
-        intent.putExtra("search", new ParamReader(parameters));
-        openActivity(intent, true);
-    }
-
     public void openActivity(Intent intent, boolean replaceCurrentActivity) {
         if (replaceCurrentActivity) { intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION); }
         context().startActivity(intent);

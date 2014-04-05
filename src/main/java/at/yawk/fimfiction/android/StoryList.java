@@ -8,6 +8,7 @@ import android.widget.Button;
 import at.yawk.fimfiction.data.SearchParameters;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonPrimitive;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j;
@@ -122,7 +123,8 @@ public class StoryList extends Fimtivity {
         menu.findItem(R.id.mature).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                getPreferences(MODE_PRIVATE).edit().putBoolean("mature", !helper().showMature()).commit();
+                helper().getPreferences().getConfig().add("mature", new JsonPrimitive(!helper().showMature()));
+                helper().getPreferences().save();
                 item.setTitle(helper().showMature() ? R.string.ms_hide : R.string.ms_show);
                 worker.updateContent();
                 return true;

@@ -34,5 +34,6 @@ public class GlobalHelper extends Helper {
     private final CharacterManager characterManager = new CharacterManager(this);
     private final ImageCache imageCache = new ImageCache(new File(baseDir(), "images"));
     private final SessionManager session = SessionManager.create();
+    private final SearchParameterManager parameterManager = new SearchParameterManager();
 }
 

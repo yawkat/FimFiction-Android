@@ -47,7 +47,7 @@ public class StoryListWorker {
         log.info("Changing parameters to " + params);
         session = new WorkerSession(new SearchView(helper, params), params);
         updateContent();
-        SearchParameterHelper.getName(params).assignTitle(helper.activity());
+        helper.getParameterManager().getName(params).assignTitle(helper.activity());
         start();
     }
 

@@ -76,6 +76,8 @@ public abstract class Helper implements TaskManager.TaskContext {
      */
     public ImageCache getImageCache() { return global().getImageCache(); }
 
+    public SearchParameterManager getParameterManager() { return global().getParameterManager(); }
+
     /**
      * Perform a task on the main thread.
      */

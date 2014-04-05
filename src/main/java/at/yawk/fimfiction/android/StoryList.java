@@ -36,12 +36,14 @@ public class StoryList extends Fimtivity {
         if (intent.hasExtra("search")) {
             r = intent.getParcelableExtra("search");
         } else {
-            r = new ParamReader(SearchParameterHelper.getDefault());
+            r = new ParamReader(helper().getParameterManager().getDefault());
         }
 
-        prepareListButton(helper().<Button>view(R.id.unread), SearchParameterHelper.UNREAD);
-        prepareListButton(helper().<Button>view(R.id.favorite), SearchParameterHelper.FAVORITE);
-        prepareListButton(helper().<Button>view(R.id.readlater), SearchParameterHelper.READ_LATER);
+        for (Map.Entry<Button, SearchParameters> button : helper().getParameterManager()
+                                                                  .findButtons(helper())
+                                                                  .entrySet()) {
+            prepareListButton(button.getKey(), button.getValue());
+        }
 
         PullToRefreshLayout layout = helper().view(R.id.refresh);
         final PullToRefreshAttacher attacher = PullToRefreshAttacher.get(this);

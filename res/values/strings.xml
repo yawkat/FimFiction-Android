@@ -44,6 +44,10 @@
     <string name="reset">Reset</string>
     <string name="rename">Rename</string>
     <string name="delete_button">x</string>
+    <string name="missing_reader">You need an epub reader to open stories. Recommended is Moon+ Reader (free).</string>
+    <string name="missing_reader_link">Moon+ Reader</string>
+    <string name="missing_package_name">com.flyersoft.moonreader</string>
+    <string name="ok">Dismiss</string>
     <array name="content_rating">
         <item>Any</item>
         <item>Everyone</item>

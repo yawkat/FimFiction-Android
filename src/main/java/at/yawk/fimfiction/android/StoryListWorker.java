@@ -1,6 +1,8 @@
 package at.yawk.fimfiction.android;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -177,11 +179,43 @@ public class StoryListWorker {
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.fromFile(target),
                                           MimeTypeMap.getSingleton().getMimeTypeFromExtension("epub"));
-                    helper.openActivity(intent, false);
+                    try {
+                        helper.openActivity(intent, false);
+                    } catch (ActivityNotFoundException e) {
+                        openMissingReaderDialog();
+                    }
                 }
                 super.onPostExecute(result);
             }
         }.execute(new StoryDownloadTask.Params(story, target));
+    }
+
+    private void openMissingReaderDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(helper.context());
+        builder.setMessage(R.string.missing_reader)
+               .setCancelable(true)
+               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       dialog.cancel();
+                   }
+               })
+               .setNeutralButton(R.string.missing_reader_link, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       String pkgname = TranslatableText.id(R.string.missing_package_name).toString(helper);
+                       try {
+                           helper.openActivity(new Intent(Intent.ACTION_VIEW,
+                                                          Uri.parse("market://details?id=" + pkgname)), false);
+                       } catch (ActivityNotFoundException e) {
+                           helper.openActivity(new Intent(Intent.ACTION_VIEW,
+                                                          Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                                                    pkgname)
+                           ), false);
+                       }
+                   }
+               })
+               .show();
     }
 
     public SearchParameters getParameters() { return session.state; }

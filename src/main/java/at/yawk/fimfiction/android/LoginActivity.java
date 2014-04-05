@@ -26,8 +26,8 @@ public class LoginActivity extends Fimtivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         boolean allowAutoLogin = getIntent().getBooleanExtra("autoLogin", true);
-        String username = helper().getPreferences().getString("username", null);
-        String password = helper().getPreferences().getString("password", null);
+        String username = helper().getSecretPreferences().getString("username", null);
+        String password = helper().getSecretPreferences().getString("password", null);
         if (username != null) {
             ((TextView) findViewById(R.id.username)).setText(username);
         }
@@ -92,7 +92,7 @@ public class LoginActivity extends Fimtivity {
                         if (status.get() == SessionActions.LoginStatus.SUCCESSFUL) {
                             attemptedLogin = true;
                             if (save) {
-                                helper().getPreferences()
+                                helper().getSecretPreferences()
                                         .edit()
                                         .putString("username", username)
                                         .putString("password", password)

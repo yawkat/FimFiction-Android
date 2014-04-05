@@ -78,6 +78,8 @@ public abstract class Helper implements TaskManager.TaskContext {
 
     public SearchParameterManager getParameterManager() { return global().getParameterManager(); }
 
+    public PublicPreferenceManager getPreferences() { return global().getPreferences(); }
+
     /**
      * Perform a task on the main thread.
      */
@@ -101,9 +103,9 @@ public abstract class Helper implements TaskManager.TaskContext {
     /**
      * Returns the SharedPreferences object that can be used for sensitive data such as passwords.
      */
-    public SharedPreferences getPreferences() {
+    public SharedPreferences getSecretPreferences() {
         return context().getSharedPreferences("at.yawk.fimfiction.android", Context.MODE_PRIVATE);
     }
 
-    public boolean showMS() { return getPreferences().getBoolean("mature", true); }
+    public boolean showMature() { return getPreferences().getBoolean("mature", true); }
 }

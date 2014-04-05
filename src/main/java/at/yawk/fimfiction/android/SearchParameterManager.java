@@ -7,13 +7,18 @@ import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.Timeframe;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.Map;
 import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Jonas Konrad (yawkat)
  */
+@RequiredArgsConstructor
 public class SearchParameterManager {
+    private final Helper helper;
     private final Map<SearchParameters, Integer> names = Maps.newHashMap();
     private final Map<Integer, SearchParameters> buttons = Maps.newHashMap();
 
@@ -62,22 +67,53 @@ public class SearchParameterManager {
 
     public SearchParameters getDefault() { return buttons.get(R.id.unread); }
 
-    @Nullable
-    public TranslatableText getNameOrNull(SearchParameters parameters) {
-        return names.containsKey(parameters) ? TranslatableText.id(names.get(parameters)) : null;
+    private String customNameOrNull(SearchParameters parameters) {
+        JsonObject conf = helper.getPreferences().getConfig().getAsJsonObject("names");
+        if (conf == null) { return null; }
+        String code = getCodeId(parameters);
+        return conf.has(code) ? conf.get(code).getAsString() : null;
+    }
+
+    private String getCodeId(SearchParameters parameters) {
+        return ImageCache.padLeftZeros(Integer.toHexString(helper.getPreferences()
+                                                                 .getQueryConfig()
+                                                                 .getQueryId(parameters)));
+    }
+
+    public boolean hasFixedName(SearchParameters parameters) {
+        return customNameOrNull(parameters) != null || names.containsKey(parameters);
     }
 
     public TranslatableText getName(SearchParameters parameters) {
-        TranslatableText orNull = getNameOrNull(parameters);
-        return orNull == null ? TranslatableText.id(R.string.search) : orNull;
+        String custom = customNameOrNull(parameters);
+        if (custom != null) {
+            return TranslatableText.string(custom);
+        } else if (hasFixedName(parameters)) {
+            return TranslatableText.id(names.get(parameters));
+        } else {
+            return TranslatableText.id(R.string.search);
+        }
     }
 
     public Map<Button, SearchParameters> findButtons(ActivityHelper helper) {
+        JsonObject conf = helper.getPreferences().getConfig().getAsJsonObject("names");
         Map<Button, SearchParameters> res = Maps.newHashMap();
         for (int k : buttons.keySet()) {
             Button button = helper.view(k);
             if (button != null) { res.put(button, buttons.get(k)); }
         }
         return res;
+    }
+
+    public void setCustomName(SearchParameters parameters, @Nullable String name) {
+        JsonObject jconf = helper.getPreferences().getConfig();
+        if (!jconf.has("names")) { jconf.add("names", new JsonObject()); }
+        JsonObject conf = jconf.getAsJsonObject("names");
+        if (name == null) {
+            conf.remove(getCodeId(parameters));
+        } else {
+            conf.add(getCodeId(parameters), new JsonPrimitive(name));
+        }
+        helper.getPreferences().save();
     }
 }

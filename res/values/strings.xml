@@ -40,6 +40,9 @@
     <string name="top_this_week">Top - This Week</string>
     <string name="longest">Longest</string>
     <string name="most_comments">Most Comments</string>
+    <string name="update">Update</string>
+    <string name="reset">Reset</string>
+    <string name="rename">Rename</string>
     <array name="content_rating">
         <item>Any</item>
         <item>Everyone</item>

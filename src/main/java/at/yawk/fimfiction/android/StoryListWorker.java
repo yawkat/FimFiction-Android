@@ -58,7 +58,7 @@ public class StoryListWorker {
         final List<Story> content;
         if (session != null) {
             content = new ArrayList<Story>(session.view.getStories());
-            if (!helper.showMS()) {
+            if (!helper.showMature()) {
                 Iterator<Story> itr = content.iterator();
                 while (itr.hasNext()) {
                     Story story = itr.next();

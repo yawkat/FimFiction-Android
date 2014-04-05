@@ -44,7 +44,7 @@ public class ImageCache {
         return new File(dir, padLeftZeros(Integer.toHexString(url.hashCode()).toUpperCase()) + ext);
     }
 
-    private static String padLeftZeros(String i) {
+    public static String padLeftZeros(String i) {
         StringBuilder builder = new StringBuilder("00000000");
         builder.replace(8 - i.length(), 8, i);
         return builder.toString();

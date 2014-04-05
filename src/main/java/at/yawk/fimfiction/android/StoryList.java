@@ -88,14 +88,25 @@ public class StoryList extends Fimtivity {
     private void updateCategoryButtons() {
         int generated = 0;
         for (Button button : sortedCategoryButtons) {
-            SearchParameters parameters = categoryButtons.get(button);
-            TranslatableText name = helper().getParameterManager().getNameOrNull(parameters);
-            if (name == null) {
-                button.setText(helper().context().getResources().getString(R.string.search_entry, ++generated));
+            final SearchParameters parameters = categoryButtons.get(button);
+            final String name;
+            if (helper().getParameterManager().hasFixedName(parameters)) {
+                name = helper().getParameterManager().getName(parameters).toString(helper());
             } else {
-                name.assign(button);
+                name = helper().context().getResources().getString(R.string.search_entry, ++generated);
             }
+            button.setText(name);
             button.setBackgroundColor(worker.getParameters().equals(parameters) ? 0xFF333333 : 0);
+            button.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Intent intent = new Intent(helper().context(), RenameParameterActivity.class);
+                    intent.putExtra("parameters", new ParamReader(parameters));
+                    intent.putExtra("name", name);
+                    helper().openActivity(intent, false);
+                    return true;
+                }
+            });
         }
     }
 
@@ -111,13 +122,13 @@ public class StoryList extends Fimtivity {
         menu.findItem(R.id.mature).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                getPreferences(MODE_PRIVATE).edit().putBoolean("mature", !helper().showMS()).commit();
-                item.setTitle(helper().showMS() ? R.string.ms_hide : R.string.ms_show);
+                getPreferences(MODE_PRIVATE).edit().putBoolean("mature", !helper().showMature()).commit();
+                item.setTitle(helper().showMature() ? R.string.ms_hide : R.string.ms_show);
                 worker.updateContent();
                 return true;
             }
         });
-        menu.findItem(R.id.mature).setTitle(helper().showMS() ? R.string.ms_hide : R.string.ms_show);
+        menu.findItem(R.id.mature).setTitle(helper().showMature() ? R.string.ms_hide : R.string.ms_show);
         menu.findItem(R.id.switch_account).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -159,5 +170,11 @@ public class StoryList extends Fimtivity {
             }
             break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCategoryButtons();
     }
 }

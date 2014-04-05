@@ -19,6 +19,10 @@
         <activity
                 android:name=".StoryList"/>
         <activity
+                android:name=".RenameParameterActivity"
+                android:label="@string/rename"
+                android:theme="@android:style/Theme.Holo.Dialog"/>
+        <activity
                 android:name=".SearchBuilderActivity"
                 android:windowSoftInputMode="adjustResize|stateHidden"
                 android:label="@string/search"

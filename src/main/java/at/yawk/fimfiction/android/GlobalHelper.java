@@ -28,12 +28,15 @@ public class GlobalHelper extends Helper {
         l.setFileName(new File(baseDir(), "logs/fimfiction-android.log").getAbsolutePath());
         l.setRootLevel(Level.DEBUG);
         l.configure();
+
+        preferences.load();
     }
 
     private final TaskManager taskManager = new TaskManager();
     private final CharacterManager characterManager = new CharacterManager(this);
     private final ImageCache imageCache = new ImageCache(new File(baseDir(), "images"));
     private final SessionManager session = SessionManager.create();
-    private final SearchParameterManager parameterManager = new SearchParameterManager();
+    private final SearchParameterManager parameterManager = new SearchParameterManager(this);
+    private final PublicPreferenceManager preferences = new PublicPreferenceManager(this);
 }
 

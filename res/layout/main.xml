@@ -46,6 +46,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/DrawerButton"/>
+
+            <LinearLayout
+                    android:id="@+id/searches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_action"
+                    style="@style/DrawerButton"/>
         </LinearLayout>
     </ScrollView>
 </android.support.v4.widget.DrawerLayout>

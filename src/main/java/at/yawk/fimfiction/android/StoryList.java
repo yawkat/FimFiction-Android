@@ -3,10 +3,7 @@ package at.yawk.fimfiction.android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import at.yawk.fimfiction.data.SearchParameters;
 import com.google.common.collect.Maps;
@@ -20,6 +17,8 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
  */
 @Log4j
 public class StoryList extends Fimtivity {
+    private static final int REQUEST_CODE_SEARCH = 1;
+
     private StoryListWorker worker;
 
     private Map<Button, SearchParameters> categoryButtons = Maps.newHashMap();
@@ -56,6 +55,14 @@ public class StoryList extends Fimtivity {
         });
 
         replaceParameters(r.getParameters(), false);
+
+        helper().<Button>view(R.id.search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent opener = new Intent(StoryList.this, SearchBuilderActivity.class);
+                startActivityForResult(opener, REQUEST_CODE_SEARCH);
+            }
+        });
     }
 
     private void prepareListButton(Button button, final SearchParameters parameters) {
@@ -88,16 +95,6 @@ public class StoryList extends Fimtivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        menu.findItem(R.id.search).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), SearchBuilderActivity.class);
-                intent.putExtra("defaults", new ParamReader(worker.getParameters()));
-                helper().openActivity(intent, false);
-                return true;
-            }
-        });
         menu.findItem(R.id.mature).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -119,5 +116,35 @@ public class StoryList extends Fimtivity {
             }
         });
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case REQUEST_CODE_SEARCH:
+            if (resultCode == RESULT_OK) {
+                final SearchParameters parameters = data.<ParamReader>getParcelableExtra("parameters").getParameters();
+                if (!categoryButtons.containsValue(parameters)) {
+                    final View v = helper().layoutInflater().inflate(R.layout.search_button, null);
+                    final Button button = (Button) v.findViewById(R.id.search_button);
+                    prepareListButton(button, parameters);
+                    final ViewGroup searches = helper().<ViewGroup>view(R.id.searches);
+                    searches.addView(v);
+                    v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            searches.removeView(v);
+                            categoryButtons.remove(button);
+                            if (worker.getParameters().equals(parameters)) {
+                                replaceParameters(helper().getParameterManager().getDefault(), false);
+                            }
+                        }
+                    });
+                }
+                replaceParameters(parameters, false);
+            }
+            break;
+        }
     }
 }

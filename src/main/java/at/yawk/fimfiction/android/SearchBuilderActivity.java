@@ -1,5 +1,6 @@
 package at.yawk.fimfiction.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import at.yawk.fimfiction.data.SearchParameters;
 
@@ -15,11 +16,14 @@ public class SearchBuilderActivity extends Fimtivity {
 
         SearchBuilder builder = new SearchBuilder(getIntent().hasExtra("defaults") ?
                                                           getIntent().<ParamReader>getParcelableExtra("defaults")
-                                                                  .getParameters() :
+                                                                     .getParameters() :
                                                           SearchParameters.createImmutable()) {
             @Override
             protected void openSearch(SearchParameters parameters) {
-                helper().openSearchActivity(parameters);
+                Intent result = new Intent();
+                result.putExtra("parameters", new ParamReader(parameters));
+                setResult(RESULT_OK, result);
+                finish();
             }
         };
         setContentView(builder.createView(helper()));

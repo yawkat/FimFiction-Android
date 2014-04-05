@@ -21,7 +21,8 @@
         <activity
                 android:name=".SearchBuilderActivity"
                 android:windowSoftInputMode="adjustResize|stateHidden"
-                android:label="@string/search"/>
+                android:label="@string/search"
+                android:theme="@android:style/Theme.Holo.Dialog"/>
         <activity
                 android:name=".LoginActivity">
             <intent-filter>

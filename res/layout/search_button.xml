@@ -19,6 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:text="x"/>
+            android:text="@string/delete_button"/>
 
 </RelativeLayout>

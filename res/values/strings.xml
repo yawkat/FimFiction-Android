@@ -43,6 +43,7 @@
     <string name="update">Update</string>
     <string name="reset">Reset</string>
     <string name="rename">Rename</string>
+    <string name="delete_button">x</string>
     <array name="content_rating">
         <item>Any</item>
         <item>Everyone</item>

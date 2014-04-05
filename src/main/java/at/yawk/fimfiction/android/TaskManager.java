@@ -8,6 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 /**
@@ -21,7 +22,7 @@ public class TaskManager {
             new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
     private final Collection<Task> tasks = Collections.newSetFromMap(new WeakHashMap<Task, Boolean>());
 
-    public synchronized void execute(Helper context, Runnable task) {
+    public synchronized void execute(TaskContext context, Runnable task) {
         Task taskElement = new Task(context, task);
         executor.execute(taskElement);
         tasks.add(taskElement);
@@ -34,24 +35,24 @@ public class TaskManager {
                 Task task = itr.next();
                 task.checkForInterrupt();
                 if (!task.isValid()) {
-                    log.debug("Removing now invalid Task from task queue (" + tasks.size() + " remaining)");
+                    log.debug("Removing invalid task " + task + " from task queue (" + tasks.size() + " remaining)");
                     itr.remove();
                 }
             }
         } catch (Exception e) { log.error("Failed while interrupting scheduled tasks", e); }
     }
+
+    public static interface TaskContext {
+        boolean enabled();
+    }
 }
 
 @Log4j
+@RequiredArgsConstructor
 class Task implements Runnable {
-    private final Helper owner;
+    private final TaskManager.TaskContext owner;
     private final Runnable action;
     private Thread runningThread = null;
-
-    Task(Helper owner, Runnable action) {
-        this.owner = owner;
-        this.action = action;
-    }
 
     public boolean isValid() { return owner.enabled(); }
 

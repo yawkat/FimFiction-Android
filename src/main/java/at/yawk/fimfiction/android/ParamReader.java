@@ -21,12 +21,10 @@ public class ParamReader implements Parcelable {
     public static final Creator<ParamReader> CREATOR = new Creator<ParamReader>() {
         @Override
         public ParamReader createFromParcel(Parcel source) {
-            String title = source.readString();
-
             JsonObject json = new JsonParser().parse(source.readString()).getAsJsonObject();
             try {
                 SearchParameters params = new Deserializer().deserializeBundle(json, SearchParameters.class);
-                return new ParamReader(params, title);
+                return new ParamReader(params);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -39,7 +37,6 @@ public class ParamReader implements Parcelable {
     };
 
     private final SearchParameters parameters;
-    private final String title;
 
     @Override
     public int describeContents() {
@@ -48,8 +45,6 @@ public class ParamReader implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-
         Serializer serializer = new Serializer();
         JsonObject json = serializer.serializeBundle(parameters);
         dest.writeString(json.toString());

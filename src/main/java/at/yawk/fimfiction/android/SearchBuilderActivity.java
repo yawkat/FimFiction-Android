@@ -19,7 +19,7 @@ public class SearchBuilderActivity extends Fimtivity {
                                                           SearchParameters.createImmutable()) {
             @Override
             protected void openSearch(SearchParameters parameters) {
-                helper().openSearchActivity(parameters, R.string.search);
+                helper().openSearchActivity(parameters);
             }
         };
         setContentView(builder.createView(helper()));

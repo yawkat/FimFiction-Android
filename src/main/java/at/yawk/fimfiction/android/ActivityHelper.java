@@ -2,6 +2,7 @@ package at.yawk.fimfiction.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 import at.yawk.fimfiction.data.SearchParameters;
 
 /**
@@ -12,16 +13,12 @@ import at.yawk.fimfiction.data.SearchParameters;
 public class ActivityHelper extends Helper {
     public ActivityHelper(Activity activity) { super(activity); }
 
-    private Activity activity() { return (Activity) context(); }
+    public Activity activity() { return (Activity) context(); }
 
-    public void openSearchActivity(SearchParameters parameters, int titleResource) {
-        openSearchActivity(parameters, context().getResources().getString(titleResource));
-    }
-
-    public void openSearchActivity(SearchParameters parameters, String title) {
+    public void openSearchActivity(SearchParameters parameters) {
         Intent intent = new Intent();
         intent.setClass(context(), StoryList.class);
-        intent.putExtra("search", new ParamReader(parameters, title));
+        intent.putExtra("search", new ParamReader(parameters));
         openActivity(intent, true);
     }
 
@@ -33,4 +30,6 @@ public class ActivityHelper extends Helper {
             activity().overridePendingTransition(0, 0);
         }
     }
+
+    public <V extends View> V view(int id) { return (V) activity().findViewById(id); }
 }

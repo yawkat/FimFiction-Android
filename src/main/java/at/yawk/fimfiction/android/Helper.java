@@ -14,7 +14,7 @@ import java.io.File;
  *
  * @author Jonas Konrad (yawkat)
  */
-public abstract class Helper {
+public abstract class Helper implements TaskManager.TaskContext {
     private final Context context;
     private boolean enabled = true;
 
@@ -28,7 +28,7 @@ public abstract class Helper {
     /**
      * @return the GlobalHelper singleton.
      */
-    private GlobalHelper global() { return GlobalHelper.getGlobalHelper(context()); }
+    public GlobalHelper global() { return GlobalHelper.getGlobalHelper(context()); }
 
     /**
      * @return true if this Helper is still enabled.
@@ -102,4 +102,6 @@ public abstract class Helper {
     public SharedPreferences getPreferences() {
         return context().getSharedPreferences("at.yawk.fimfiction.android", Context.MODE_PRIVATE);
     }
+
+    public boolean showMS() { return getPreferences().getBoolean("mature", true); }
 }

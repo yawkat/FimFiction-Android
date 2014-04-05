@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DrawerButton" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+</resources>

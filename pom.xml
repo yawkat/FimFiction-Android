@@ -13,12 +13,14 @@
             <id>yawkat</id>
             <url>http://ci.yawk.at/plugin/repository/everything</url>
         </repository>
+        <repository>
+            <id>android.support-mvn-repo</id>
+            <url>https://raw.github.com/kmchugh/android.support/mvn-repo</url>
+        </repository>
     </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <platform.version>4.1.1.4
-        </platform.version>
         <android.plugin.version>3.6.0</android.plugin.version>
     </properties>
 
@@ -46,8 +48,20 @@
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>${platform.version}</version>
+            <version>4.1.1.4</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>18.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.chrisbanes.actionbarpulltorefresh</groupId>
+            <artifactId>library</artifactId>
+            <version>0.6</version>
+            <type>apklib</type>
         </dependency>
     </dependencies>
 
@@ -103,8 +117,10 @@
                                     <keypass>${android.keystore.keypass}</keypass>
                                     <alias>${android.keystore.alias}</alias>
                                     <arguments>
-                                      <argument>-sigalg</argument><argument>MD5withRSA</argument>
-                                      <argument>-digestalg</argument><argument>SHA1</argument>
+                                        <argument>-sigalg</argument>
+                                        <argument>MD5withRSA</argument>
+                                        <argument>-digestalg</argument>
+                                        <argument>SHA1</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -112,7 +128,9 @@
                                 <id>zipalign</id>
                                 <phase>package</phase>
                                 <configuration>
-                                    <zipalign><skip>false</skip></zipalign>
+                                    <zipalign>
+                                        <skip>false</skip>
+                                    </zipalign>
                                 </configuration>
                             </execution>
                         </executions>

@@ -109,6 +109,7 @@ public class StoryList extends Fimtivity {
                 }
             });
         }
+        worker.updateTitle();
     }
 
     private void replaceParameters(SearchParameters parameters, boolean force) {

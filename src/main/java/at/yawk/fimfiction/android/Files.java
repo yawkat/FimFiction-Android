@@ -6,7 +6,7 @@ package at.yawk.fimfiction.android;
  * @author Jonas Konrad (yawkat)
  */
 public class Files {
-    private static final String INVALID_CHARACTERS = "/\\?*%|:\"<>";
+    private static final String INVALID_CHARACTERS = "/\\?*%|:\"<>.";
 
     private Files() {}
 

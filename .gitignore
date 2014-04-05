@@ -2,6 +2,7 @@
 *.apk
 *.iml
 gen/
+gen-external-apklibs/
 lib/
 target/
 local.properties

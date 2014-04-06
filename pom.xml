@@ -83,7 +83,7 @@
                 <artifactId>android-maven-plugin</artifactId>
                 <configuration>
                     <sdk>
-                        <platform>16</platform>
+                        <platform>15</platform>
                     </sdk>
                 </configuration>
             </plugin>

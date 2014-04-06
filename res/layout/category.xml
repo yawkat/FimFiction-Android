@@ -6,18 +6,18 @@
                 android:padding="3dp">
 
     <RelativeLayout
+            android:id="@+id/colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded"
-            android:padding="4dp">
+            android:padding="4dp"
+            android:height="40dp">
 
         <TextView
                 android:id="@+id/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/TextAppearance.DeviceDefault.Large"
-                android:layout_marginRight="4dp"
-                android:height="32dp"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:gravity="center_vertical"/>
     </RelativeLayout>
 </RelativeLayout>

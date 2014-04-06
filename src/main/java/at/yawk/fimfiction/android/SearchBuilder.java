@@ -9,7 +9,6 @@ import at.yawk.fimfiction.data.ContentRating;
 import at.yawk.fimfiction.data.Order;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.User;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;

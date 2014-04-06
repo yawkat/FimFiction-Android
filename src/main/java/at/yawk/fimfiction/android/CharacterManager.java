@@ -2,6 +2,7 @@ package at.yawk.fimfiction.android;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -69,7 +70,7 @@ public class CharacterManager {
                     ScrollView scrollView = new ScrollView(helper.context());
                     scrollView.addView(selection.getView());
                     dialog.setContentView(scrollView);
-                    dialog.setTitle("Add Character");
+                    dialog.setTitle(R.string.add_tag);
                     dialog.show();
                 }
             });
@@ -132,7 +133,8 @@ public class CharacterManager {
                                            public FimCharacter apply(@Nullable Tag tag) {
                                                return ((CharacterTag) tag).character;
                                            }
-                                       });
+                                       }
+            );
         }
 
         public Iterable<Category> getCategories() {
@@ -143,7 +145,8 @@ public class CharacterManager {
                                            public Category apply(@Nullable Tag tag) {
                                                return ((CategoryTag) tag).category;
                                            }
-                                       });
+                                       }
+            );
         }
     }
 
@@ -191,6 +194,49 @@ public class CharacterManager {
             View view = helper.layoutInflater().inflate(R.layout.category, null);
             CharSequence[] categories = helper.context().getResources().getTextArray(R.array.category);
             ((TextView) view.findViewById(R.id.category)).setText(categories[category.ordinal()]);
+            int color = 0;
+            switch (category) {
+            case ADVENTURE:
+                color = 0x45c950;
+                break;
+            case ALTERNATE_UNIVERSE:
+                color = 0x888888;
+                break;
+            case ANTHRO:
+                color = 0xb5695a;
+                break;
+            case COMEDY:
+                color = 0xcaa600;
+                break;
+            case CROSSOVER:
+                color = 0x47b8a0;
+                break;
+            case DARK:
+                color = 0x982323;
+                break;
+            case HUMAN:
+                color = 0xb5835a;
+                break;
+            case RANDOM:
+                color = 0x3f74ce;
+                break;
+            case ROMANCE:
+                color = 0x773db3;
+                break;
+            case TRAGEDY:
+                color = 0xe09d2b;
+                break;
+            case SAD:
+                color = 0xd95e87;
+                break;
+            case SLICE_OF_LIFE:
+                color = 0x3f49cf;
+                break;
+            }
+            if (color != 0) {
+                // replace color
+                view.findViewById(R.id.colored).getBackground().setColorFilter(color | 0xFF000000, PorterDuff.Mode.SRC);
+            }
             return view;
         }
     }

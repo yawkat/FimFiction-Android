@@ -33,7 +33,7 @@ public class GlobalHelper extends Helper {
     }
 
     private final TaskManager taskManager = new TaskManager();
-    private final CharacterManager characterManager = new CharacterManager(this);
+    private final TagManager tagManager = new TagManager(this);
     private final ImageCache imageCache = new ImageCache(new File(baseDir(), "images"));
     private final SessionManager session = SessionManager.create();
     private final SearchParameterManager parameterManager = new SearchParameterManager(this);

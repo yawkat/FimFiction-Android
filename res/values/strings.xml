@@ -48,6 +48,13 @@
     <string name="missing_reader_link">Moon+ Reader</string>
     <string name="missing_package_name">com.flyersoft.moonreader</string>
     <string name="ok">Dismiss</string>
+    <string name="complete">Complete</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="on_hiatus">On Hiatus</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="everyone">Everyone</string>
+    <string name="teen">Teen</string>
+    <string name="mature">Mature</string>
     <string name="add_tag">Add Tag</string>
     <array name="content_rating">
         <item>Any</item>

@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import at.yawk.fimfiction.data.Category;
 import at.yawk.fimfiction.data.FimCharacter;
+import at.yawk.fimfiction.data.Story;
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
@@ -28,23 +29,20 @@ import lombok.*;
  * @author Yawkat
  */
 @RequiredArgsConstructor
-public class CharacterManager {
+public class TagManager {
     private final Helper helper;
 
-    public CharacterList createCharacterList(Helper helper, boolean editable) {
-        return createCharacterList(helper, editable, ImmutableSet.<Tag>of());
+    public TagList createTagList(boolean editable) {
+        return createTagList(editable, ImmutableSet.<Tag>of());
     }
 
-    public CharacterList createCharacterList(Helper helper,
-                                             boolean editable,
-                                             Iterable<? extends FimCharacter> characters,
-                                             Iterable<Category> categories) {
-        return createCharacterList(helper, editable, toTags(characters, categories));
+    public TagList createTagList(boolean editable, Story data) {
+        return createTagList(editable, toTags(data));
     }
 
-    public CharacterList createCharacterList(final Helper helper, boolean editable, Iterable<Tag> tags) {
+    public TagList createTagList(boolean editable, Iterable<Tag> tags) {
         ViewGroup v = (ViewGroup) helper.layoutInflater().inflate(R.layout.character_list, null);
-        final CharacterList l = new CharacterList(helper, editable, v);
+        final TagList l = new TagList(helper, editable, v);
         if (editable) {
             View add = helper.layoutInflater().inflate(R.layout.character_add, null);
             v.addView(add);
@@ -52,7 +50,7 @@ public class CharacterManager {
                 @Override
                 public void onClick(View v) {
                     final Dialog dialog = new Dialog(helper.context());
-                    CharacterList selection = createCharacterList(helper, false, ImmutableSet.<Tag>of());
+                    TagList selection = createTagList(false, ImmutableSet.<Tag>of());
                     for (final Tag tag : getAllTags()) {
                         if (!l.tags.contains(tag)) {
                             View view = selection.addTagView(tag);
@@ -79,23 +77,36 @@ public class CharacterManager {
         return l;
     }
 
-    private static Iterable<Tag> getAllTags() {
-        return toTags(Arrays.asList(FimCharacter.DefaultCharacter.values()), Arrays.asList(Category.values()));
+    private Iterable<Tag> getAllTags() {
+        List<Tag> tags = Lists.newArrayList();
+        appendCategoriesAndCharacters(tags,
+                                      Arrays.asList(Category.values()),
+                                      Arrays.<FimCharacter>asList(FimCharacter.DefaultCharacter.values()));
+        return tags;
     }
 
-    private static Iterable<Tag> toTags(Iterable<? extends FimCharacter> characters, Iterable<Category> categories) {
+    @SuppressWarnings("unchecked")
+    private Iterable<Tag> toTags(Story data) {
         List<Tag> result = Lists.newArrayList();
+        appendCategoriesAndCharacters(result,
+                                      (Iterable<Category>) data.get(Story.StoryKey.CATEGORIES),
+                                      (Iterable<FimCharacter>) data.get(Story.StoryKey.CHARACTERS));
+        return result;
+    }
+
+    private void appendCategoriesAndCharacters(List<Tag> result,
+                                               Iterable<Category> categories,
+                                               Iterable<FimCharacter> characters) {
         for (Category category : categories) {
-            result.add(new CategoryTag(category));
+            result.add(new CategoryTag(helper, category));
         }
         for (FimCharacter character : characters) {
             result.add(new CharacterTag(character));
         }
-        return result;
     }
 
     @RequiredArgsConstructor
-    public static class CharacterList {
+    public static class TagList {
         private final Helper helper;
         private final Set<Tag> tags = new HashSet<Tag>();
         private final boolean editable;
@@ -134,7 +145,7 @@ public class CharacterManager {
                                                return ((CharacterTag) tag).character;
                                            }
                                        }
-            );
+                                      );
         }
 
         public Iterable<Category> getCategories() {
@@ -146,7 +157,7 @@ public class CharacterManager {
                                                return ((CategoryTag) tag).category;
                                            }
                                        }
-            );
+                                      );
         }
     }
 
@@ -157,13 +168,13 @@ public class CharacterManager {
 
     @RequiredArgsConstructor
     @Getter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(callSuper = false)
     public static class CharacterTag extends Tag {
         private final FimCharacter character;
 
         @Override
         protected View createView(final Helper helper) {
-            final View v = helper.layoutInflater().inflate(R.layout.character, null);
+            final View v = helper.layoutInflater().inflate(R.layout.tag_character, null);
             helper.executeGlobalTask(new Runnable() {
                 @Override
                 public void run() {
@@ -183,61 +194,70 @@ public class CharacterManager {
         }
     }
 
+
     @RequiredArgsConstructor
     @Getter
-    @EqualsAndHashCode
-    public static class CategoryTag extends Tag {
-        private final Category category;
+    @EqualsAndHashCode(callSuper = false)
+    private static class TextTag extends Tag {
+        private final TranslatableText name;
+        private final int color;
 
         @Override
         protected View createView(Helper helper) {
-            View view = helper.layoutInflater().inflate(R.layout.category, null);
-            CharSequence[] categories = helper.context().getResources().getTextArray(R.array.category);
-            ((TextView) view.findViewById(R.id.category)).setText(categories[category.ordinal()]);
-            int color = 0;
-            switch (category) {
-            case ADVENTURE:
-                color = 0x45c950;
-                break;
-            case ALTERNATE_UNIVERSE:
-                color = 0x888888;
-                break;
-            case ANTHRO:
-                color = 0xb5695a;
-                break;
-            case COMEDY:
-                color = 0xcaa600;
-                break;
-            case CROSSOVER:
-                color = 0x47b8a0;
-                break;
-            case DARK:
-                color = 0x982323;
-                break;
-            case HUMAN:
-                color = 0xb5835a;
-                break;
-            case RANDOM:
-                color = 0x3f74ce;
-                break;
-            case ROMANCE:
-                color = 0x773db3;
-                break;
-            case TRAGEDY:
-                color = 0xe09d2b;
-                break;
-            case SAD:
-                color = 0xd95e87;
-                break;
-            case SLICE_OF_LIFE:
-                color = 0x3f49cf;
-                break;
-            }
+            View view = helper.layoutInflater().inflate(R.layout.tag_category, null);
+            name.assign((TextView) view.findViewById(R.id.category));
             if (color != 0) {
                 // replace color
                 view.findViewById(R.id.colored).getBackground().setColorFilter(color | 0xFF000000, PorterDuff.Mode.SRC);
             }
             return view;
+        }
+    }
+
+    @Getter
+    @EqualsAndHashCode(callSuper = false)
+    public static class CategoryTag extends TextTag {
+        private final Category category;
+
+        public CategoryTag(Helper helper, Category category) {
+            super(TranslatableText.string(name(helper, category)), color(category));
+            this.category = category;
+        }
+
+        private static int color(Category category) {
+            switch (category) {
+            case ADVENTURE:
+                return 0x45c950;
+            case ALTERNATE_UNIVERSE:
+                return 0x888888;
+            case ANTHRO:
+                return 0xb5695a;
+            case COMEDY:
+                return 0xcaa600;
+            case CROSSOVER:
+                return 0x47b8a0;
+            case DARK:
+                return 0x982323;
+            case HUMAN:
+                return 0xb5835a;
+            case RANDOM:
+                return 0x3f74ce;
+            case ROMANCE:
+                return 0x773db3;
+            case TRAGEDY:
+                return 0xe09d2b;
+            case SAD:
+                return 0xd95e87;
+            case SLICE_OF_LIFE:
+                return 0x3f49cf;
+            default:
+                return 0;
+            }
+        }
+
+        private static CharSequence name(Helper helper, Category category) {
+            CharSequence[] categories = helper.context().getResources().getTextArray(R.array.category);
+            return categories[category.ordinal()];
         }
     }
 }

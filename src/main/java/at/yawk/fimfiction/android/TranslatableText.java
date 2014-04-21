@@ -16,10 +16,22 @@ public abstract class TranslatableText {
 
     public abstract void assignTitle(Activity activity);
 
-    public static TranslatableText string(final String text) {
+    public TextView textView(Helper helper, int layout) {
+        TextView view = (TextView) helper.layoutInflater().inflate(layout, null);
+        assign(view);
+        return view;
+    }
+
+    public TextView textView(Helper helper, int layout, int color) {
+        TextView view = textView(helper, layout);
+        view.setTextColor(0xFF000000 | color);
+        return view;
+    }
+
+    public static TranslatableText string(final CharSequence text) {
         return new TranslatableText() {
             @Override
-            public String toString(Helper helper) { return text; }
+            public String toString(Helper helper) { return text.toString(); }
 
             @Override
             public void assign(TextView view) { view.setText(text); }

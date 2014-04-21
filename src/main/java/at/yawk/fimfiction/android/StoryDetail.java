@@ -38,8 +38,41 @@ public class StoryDetail {
         ((TextView) root.findViewById(R.id.title)).setText(story.getString(Story.StoryKey.TITLE));
         ((TextView) root.findViewById(R.id.author)).setText(story.<User>get(Story.StoryKey.AUTHOR)
                                                                  .getString(User.UserKey.NAME));
-        String html =
-                story.<FormattedString>get(Story.StoryKey.DESCRIPTION).buildFormattedText(FormattedString.Markup.HTML);
+        ViewGroup statusTags = (ViewGroup) root.findViewById(R.id.status_tags);
+        switch ((StoryStatus) story.get(Story.StoryKey.STATUS)) {
+        case COMPLETED:
+            statusTags.addView(TranslatableText.id(R.string.complete).textView(helper, R.layout.status_tag));
+            break;
+        case INCOMPLETE:
+            statusTags.addView(TranslatableText.id(R.string.incomplete).textView(helper, R.layout.status_tag));
+            break;
+        case ON_HIATUS:
+            statusTags.addView(TranslatableText.id(R.string.on_hiatus).textView(helper, R.layout.status_tag));
+            break;
+        case CANCELLED:
+            statusTags.addView(TranslatableText.id(R.string.cancelled).textView(helper, R.layout.status_tag));
+            break;
+        }
+        switch ((ContentRating) story.get(Story.StoryKey.CONTENT_RATING)) {
+        case EVERYONE:
+            statusTags.addView(TranslatableText.id(R.string.everyone).textView(helper, R.layout.status_tag, 0x89C738));
+            break;
+        case TEEN:
+            statusTags.addView(TranslatableText.id(R.string.teen).textView(helper, R.layout.status_tag, 0xC78238));
+            break;
+        case MATURE:
+            statusTags.addView(TranslatableText.id(R.string.mature).textView(helper, R.layout.status_tag, 0xC73838));
+            break;
+        }
+        if (story.getBoolean(Story.StoryKey.SEX, false)) {
+            statusTags.addView(TranslatableText.id(R.string.sex_short).textView(helper, R.layout.status_tag, 0x7B33DD));
+        }
+        if (story.getBoolean(Story.StoryKey.GORE, false)) {
+            statusTags.addView(TranslatableText.id(R.string.gore_short)
+                                               .textView(helper, R.layout.status_tag, 0xDD3333));
+        }
+        String html = story.<FormattedString>get(Story.StoryKey.DESCRIPTION)
+                           .buildFormattedText(FormattedString.Markup.HTML);
         ((TextView) root.findViewById(R.id.description)).setText(Html.fromHtml(html));
         root.findViewById(R.id.favorite)
             .setAlpha(story.<FavoriteState>get(Story.StoryKey.FAVORITE_STATE).isFavorited() ? 1 : 0.5F);
@@ -87,14 +120,13 @@ public class StoryDetail {
                                                                                            .getHttpClient(),
                                                                                      story,
                                                                                      readLater
-                                               ));
+                                                                                    ));
                                                if (root.getHandler() != null) {
                                                    root.getHandler().post(new Runnable() {
                                                        @Override
                                                        public void run() {
                                                            root.findViewById(R.id.readlater)
-                                                               .setAlpha(story.getBoolean(Story.StoryKey
-                                                                                                  .READ_LATER_STATE) ?
+                                                               .setAlpha(story.getBoolean(Story.StoryKey.READ_LATER_STATE) ?
                                                                                  1 :
                                                                                  0.5F);
                                                        }
@@ -106,7 +138,7 @@ public class StoryDetail {
                                            }
                                        }
                                    }
-                );
+                                  );
             }
         });
         if (getImage() != null) {
@@ -172,10 +204,7 @@ public class StoryDetail {
             });
             ((ViewGroup) root.findViewById(R.id.chapters)).addView(chapterView);
         }
-        Iterable<FimCharacter> characters = story.get(Story.StoryKey.CHARACTERS);
-        Iterable<Category> categories = story.get(Story.StoryKey.CATEGORIES);
-        CharacterManager.CharacterList list =
-                helper.getCharacterManager().createCharacterList(helper, false, characters, categories);
+        TagManager.TagList list = helper.getTagManager().createTagList(false, story);
         list.getView()
             .setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                              ViewGroup.LayoutParams.WRAP_CONTENT));

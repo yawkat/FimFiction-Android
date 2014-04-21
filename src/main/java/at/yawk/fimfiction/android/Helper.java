@@ -69,7 +69,7 @@ public abstract class Helper implements TaskManager.TaskContext {
     /**
      * @return The CharacterManager singleton.
      */
-    public CharacterManager getCharacterManager() { return global().getCharacterManager(); }
+    public TagManager getTagManager() { return global().getTagManager(); }
 
     /**
      * @return The ImageCache singleton.

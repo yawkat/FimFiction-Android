@@ -36,6 +36,19 @@ public class StoryDetail {
     public View createView(final ActivityHelper helper) {
         final View root = helper.layoutInflater().inflate(R.layout.story_detail, null);
         ((TextView) root.findViewById(R.id.title)).setText(story.getString(Story.StoryKey.TITLE));
+        root.findViewById(R.id.title).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helper.downloadAndOpen(story);
+            }
+        });
+        root.findViewById(R.id.title).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                helper.openAddressExternal((URL) story.get(Story.StoryKey.URL));
+                return true;
+            }
+        });
         ((TextView) root.findViewById(R.id.author)).setText(story.<User>get(Story.StoryKey.AUTHOR)
                                                                  .getString(User.UserKey.NAME));
         ViewGroup statusTags = (ViewGroup) root.findViewById(R.id.status_tags);

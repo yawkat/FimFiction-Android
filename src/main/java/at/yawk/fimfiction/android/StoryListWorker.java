@@ -1,9 +1,6 @@
 package at.yawk.fimfiction.android;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,7 +11,6 @@ import at.yawk.fimfiction.data.ContentRating;
 import at.yawk.fimfiction.data.SearchParameters;
 import at.yawk.fimfiction.data.Story;
 import com.google.common.collect.ImmutableList;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -117,7 +113,7 @@ public class StoryListWorker {
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                download(story);
+                                helper.downloadAndOpen(story);
                             }
                         });
                         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -156,46 +152,6 @@ public class StoryListWorker {
         dialog.setView(storyDetail.createView(helper));
         AlertDialog theDialog = dialog.create();
         theDialog.show();
-    }
-
-    /**
-     * Downloads the given story, showing a progress dialog while doing so.
-     */
-    private void download(Story story) {
-        final File target = new File(helper.baseDir(),
-                                     "stories/" + Files.escape(story.getString(Story.StoryKey.TITLE)) + ".epub");
-        new ProgressStoryDownloadTask(helper) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    helper.openFileExternal(target,
-                                            TranslatableText.id(R.string.missing_reader),
-                                            R.string.missing_reader_link,
-                                            new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    String pkgname = TranslatableText.id(R.string.missing_package_name)
-                                                                                     .toString(helper);
-                                                    try {
-                                                        helper.openActivity(new Intent(Intent.ACTION_VIEW,
-                                                                                       Uri.parse("market://details?id=" +
-                                                                                                 pkgname)
-                                                        ), false);
-                                                    } catch (ActivityNotFoundException e) {
-                                                        helper.openActivity(new Intent(Intent.ACTION_VIEW,
-                                                                                       Uri.parse(
-                                                                                               "https://play.google.com/store/apps/details?id=" +
-                                                                                               pkgname
-                                                                                                )
-                                                        ), false);
-                                                    }
-                                                }
-                                            }
-                                           );
-                }
-                super.onPostExecute(result);
-            }
-        }.execute(new StoryDownloadTask.Params(story, target));
     }
 
     public SearchParameters getParameters() { return session.state; }

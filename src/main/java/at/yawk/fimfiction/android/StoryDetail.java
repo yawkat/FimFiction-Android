@@ -33,7 +33,7 @@ public class StoryDetail {
         this.listUpdateCallback = listUpdateCallback;
     }
 
-    public View createView(final Helper helper) {
+    public View createView(final ActivityHelper helper) {
         final View root = helper.layoutInflater().inflate(R.layout.story_detail, null);
         ((TextView) root.findViewById(R.id.title)).setText(story.getString(Story.StoryKey.TITLE));
         ((TextView) root.findViewById(R.id.author)).setText(story.<User>get(Story.StoryKey.AUTHOR)
@@ -153,6 +153,15 @@ public class StoryDetail {
                             @Override
                             public void run() {
                                 ((ImageView) root.findViewById(R.id.cover)).setImageBitmap(bitmap);
+                                root.findViewById(R.id.cover).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        helper.openFileExternal(helper.getImageCache().file(getImage()),
+                                                                TranslatableText.id(R.string.missing_gallery),
+                                                                0,
+                                                                null);
+                                    }
+                                });
                                 root.findViewById(R.id.cover).setVisibility(View.VISIBLE);
                             }
                         });

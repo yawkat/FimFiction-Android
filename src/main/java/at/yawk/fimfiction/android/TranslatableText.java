@@ -1,6 +1,7 @@
 package at.yawk.fimfiction.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.widget.TextView;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ public abstract class TranslatableText {
     public abstract void assign(TextView view);
 
     public abstract void assignTitle(Activity activity);
+
+    public abstract void assignMessage(AlertDialog.Builder builder);
 
     public TextView textView(Helper helper, int layout) {
         TextView view = (TextView) helper.layoutInflater().inflate(layout, null);
@@ -38,6 +41,9 @@ public abstract class TranslatableText {
 
             @Override
             public void assignTitle(Activity activity) { activity.setTitle(text); }
+
+            @Override
+            public void assignMessage(AlertDialog.Builder builder) { builder.setMessage(text); }
         };
     }
 
@@ -51,6 +57,9 @@ public abstract class TranslatableText {
 
             @Override
             public void assignTitle(Activity activity) { activity.setTitle(id); }
+
+            @Override
+            public void assignMessage(AlertDialog.Builder builder) { builder.setMessage(id); }
         };
     }
 }

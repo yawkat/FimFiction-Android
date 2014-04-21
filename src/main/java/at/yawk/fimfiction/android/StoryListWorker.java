@@ -2,12 +2,10 @@ package at.yawk.fimfiction.android;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -129,10 +127,8 @@ public class StoryListWorker {
                                 return true;
                             }
                         });
-                        ((TextView) convertView.findViewById(R.id.title)).setText(story.getString(Story.StoryKey
-                                                                                                          .TITLE));
-                        ((TextView) convertView.findViewById(R.id.chapters)).setText(Integer.toString(story.getInt
-                                (Story.StoryKey.CHAPTER_COUNT)));
+                        ((TextView) convertView.findViewById(R.id.title)).setText(story.getString(Story.StoryKey.TITLE));
+                        ((TextView) convertView.findViewById(R.id.chapters)).setText(Integer.toString(story.getInt(Story.StoryKey.CHAPTER_COUNT)));
                         ((TextView) convertView.findViewById(R.id.read)).setText(Integer.toString(read));
                     }
                     return convertView;
@@ -166,56 +162,40 @@ public class StoryListWorker {
      * Downloads the given story, showing a progress dialog while doing so.
      */
     private void download(Story story) {
-        StringBuilder fileBuilder = new StringBuilder();
-        fileBuilder.append("stories/");
-        fileBuilder.append(Files.escape(story.getString(Story.StoryKey.TITLE)));
-        fileBuilder.append(".epub");
-        final File target = new File(helper.baseDir(), fileBuilder.toString());
+        final File target = new File(helper.baseDir(),
+                                     "stories/" + Files.escape(story.getString(Story.StoryKey.TITLE)) + ".epub");
         new ProgressStoryDownloadTask(helper) {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.fromFile(target),
-                                          MimeTypeMap.getSingleton().getMimeTypeFromExtension("epub"));
-                    try {
-                        helper.openActivity(intent, false);
-                    } catch (ActivityNotFoundException e) {
-                        openMissingReaderDialog();
-                    }
+                    helper.openFileExternal(target,
+                                            TranslatableText.id(R.string.missing_reader),
+                                            R.string.missing_reader_link,
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    String pkgname = TranslatableText.id(R.string.missing_package_name)
+                                                                                     .toString(helper);
+                                                    try {
+                                                        helper.openActivity(new Intent(Intent.ACTION_VIEW,
+                                                                                       Uri.parse("market://details?id=" +
+                                                                                                 pkgname)
+                                                        ), false);
+                                                    } catch (ActivityNotFoundException e) {
+                                                        helper.openActivity(new Intent(Intent.ACTION_VIEW,
+                                                                                       Uri.parse(
+                                                                                               "https://play.google.com/store/apps/details?id=" +
+                                                                                               pkgname
+                                                                                                )
+                                                        ), false);
+                                                    }
+                                                }
+                                            }
+                                           );
                 }
                 super.onPostExecute(result);
             }
         }.execute(new StoryDownloadTask.Params(story, target));
-    }
-
-    private void openMissingReaderDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(helper.context());
-        builder.setMessage(R.string.missing_reader)
-               .setCancelable(true)
-               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       dialog.cancel();
-                   }
-               })
-               .setNeutralButton(R.string.missing_reader_link, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       String pkgname = TranslatableText.id(R.string.missing_package_name).toString(helper);
-                       try {
-                           helper.openActivity(new Intent(Intent.ACTION_VIEW,
-                                                          Uri.parse("market://details?id=" + pkgname)), false);
-                       } catch (ActivityNotFoundException e) {
-                           helper.openActivity(new Intent(Intent.ACTION_VIEW,
-                                                          Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                                                    pkgname)
-                           ), false);
-                       }
-                   }
-               })
-               .show();
     }
 
     public SearchParameters getParameters() { return session.state; }

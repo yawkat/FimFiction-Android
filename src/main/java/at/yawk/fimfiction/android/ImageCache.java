@@ -35,7 +35,7 @@ public class ImageCache {
         return null;
     }
 
-    private File file(URL url) {
+    public File file(URL url) {
         String file = url.getFile();
         if (file.indexOf('?') != -1) {
             file = file.substring(0, file.indexOf('?'));

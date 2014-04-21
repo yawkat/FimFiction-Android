@@ -1,5 +1,7 @@
 package at.yawk.fimfiction.android;
 
+import java.io.File;
+
 /**
  * File name escaping.
  *
@@ -21,5 +23,14 @@ public class Files {
 
     public static boolean isValidNameCharacter(char c) {
         return INVALID_CHARACTERS.indexOf(c) == -1;
+    }
+
+    public static String getExtension(File file) {
+        return getExtension(file.getName());
+    }
+
+    public static String getExtension(String fileName) {
+        int i = fileName.lastIndexOf('.');
+        return i == -1 ? "" : fileName.substring(i + 1);
     }
 }

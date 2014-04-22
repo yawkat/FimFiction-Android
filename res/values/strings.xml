@@ -86,4 +86,7 @@
         <item>Words</item>
         <item>Comments</item>
     </array>
+    <string name="error_cannot_parse">Could not parse story URL.</string>
+    <string name="error_cannot_find">Story not found.</string>
+    <string name="error_cannot_load">An error occurred, see log for details.</string>
 </resources>

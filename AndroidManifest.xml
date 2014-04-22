@@ -15,7 +15,8 @@
 
     <application
             android:label="@string/app_name"
-            android:icon="@drawable/icon">
+            android:icon="@drawable/icon"
+            android:allowBackup="true">
         <activity
                 android:name=".StoryList"/>
         <activity
@@ -32,6 +33,33 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".ExternalStoryOpenActivity"
+                android:theme="@android:style/Theme.Holo.Dialog">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                        android:scheme="http"
+                        android:host="fimfiction.net"
+                        android:pathPattern="/story/.*"/>
+                <data
+                        android:scheme="http"
+                        android:host="www.fimfiction.net"
+                        android:pathPattern="/story/.*"/>
+                <data
+                        android:scheme="https"
+                        android:host="fimfiction.net"
+                        android:pathPattern="/story/.*"/>
+                <data
+                        android:scheme="https"
+                        android:host="www.fimfiction.net"
+                        android:pathPattern="/story/.*"/>
             </intent-filter>
         </activity>
     </application>

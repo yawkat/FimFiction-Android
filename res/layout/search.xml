@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Large"
-            android:layout_alignBaseline="@id/favorite_checkbox"/>
+            android:layout_alignBaseline="@+id/favorite_checkbox"/>
 
     <CheckBox
             android:id="@+id/favorite_checkbox"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Large"
-            android:layout_alignBaseline="@id/readlater_checkbox"
+            android:layout_alignBaseline="@+id/readlater_checkbox"
             />
 
     <CheckBox

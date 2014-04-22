@@ -44,7 +44,7 @@ public class TagManager {
         ViewGroup v = (ViewGroup) helper.layoutInflater().inflate(R.layout.character_list, null);
         final TagList l = new TagList(helper, editable, v);
         if (editable) {
-            View add = helper.layoutInflater().inflate(R.layout.character_add, null);
+            View add = helper.layoutInflater().inflate(R.layout.tag_add, null);
             v.addView(add);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override

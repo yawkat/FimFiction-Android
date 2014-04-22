@@ -32,15 +32,15 @@ import lombok.*;
 public class TagManager {
     private final Helper helper;
 
-    public TagList createTagList(boolean editable) {
-        return createTagList(editable, ImmutableSet.<Tag>of());
+    public TagList createTagList(ActivityHelper helper, boolean editable) {
+        return createTagList(helper, editable, ImmutableSet.<Tag>of());
     }
 
-    public TagList createTagList(boolean editable, Story data) {
-        return createTagList(editable, toTags(data));
+    public TagList createTagList(ActivityHelper helper, boolean editable, Story data) {
+        return createTagList(helper, editable, toTags(data));
     }
 
-    public TagList createTagList(boolean editable, Iterable<Tag> tags) {
+    public TagList createTagList(final ActivityHelper helper, boolean editable, Iterable<Tag> tags) {
         ViewGroup v = (ViewGroup) helper.layoutInflater().inflate(R.layout.character_list, null);
         final TagList l = new TagList(helper, editable, v);
         if (editable) {
@@ -49,8 +49,8 @@ public class TagManager {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialog = new Dialog(helper.context());
-                    TagList selection = createTagList(false, ImmutableSet.<Tag>of());
+                    final Dialog dialog = new Dialog(helper.activity());
+                    TagList selection = createTagList(helper, false, ImmutableSet.<Tag>of());
                     for (final Tag tag : getAllTags()) {
                         if (!l.tags.contains(tag)) {
                             View view = selection.addTagView(tag);

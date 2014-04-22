@@ -14,10 +14,7 @@ public class SearchBuilderActivity extends Fimtivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SearchBuilder builder = new SearchBuilder(getIntent().hasExtra("defaults") ?
-                                                          getIntent().<ParamReader>getParcelableExtra("defaults")
-                                                                     .getParameters() :
-                                                          SearchParameters.createImmutable()) {
+        SearchBuilder builder = new SearchBuilder() {
             @Override
             protected void openSearch(SearchParameters parameters) {
                 Intent result = new Intent();

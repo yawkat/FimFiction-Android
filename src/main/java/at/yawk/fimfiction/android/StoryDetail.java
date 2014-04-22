@@ -226,7 +226,7 @@ public class StoryDetail {
             });
             ((ViewGroup) root.findViewById(R.id.chapter_list)).addView(chapterView);
         }
-        TagManager.TagList list = helper.getTagManager().createTagList(false, story);
+        TagManager.TagList list = helper.getTagManager().createTagList(helper, false, story);
         list.getView()
             .setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                              ViewGroup.LayoutParams.WRAP_CONTENT));

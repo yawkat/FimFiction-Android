@@ -39,8 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Large"
-            android:layout_alignBaseline="@id/unread_query"
-            />
+            android:layout_alignBaseline="@+id/unread_checkbox"/>
 
     <CheckBox
             android:id="@+id/unread_checkbox"

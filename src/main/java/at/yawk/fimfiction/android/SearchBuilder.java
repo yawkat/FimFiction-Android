@@ -63,17 +63,17 @@ public abstract class SearchBuilder {
             public void onClick(View v) {
                 SearchParameters parameters = defaults.mutableCopy();
                 parameters.set(SearchParameters.SearchParameter.FAVORITED,
-                               ((CheckBox) root.findViewById(R.id.favorite)).isChecked());
+                               ((CheckBox) root.findViewById(R.id.favorite_checkbox)).isChecked());
                 parameters.set(SearchParameters.SearchParameter.UNREAD,
-                               ((CheckBox) root.findViewById(R.id.unread)).isChecked());
+                               ((CheckBox) root.findViewById(R.id.unread_checkbox)).isChecked());
                 parameters.set(SearchParameters.SearchParameter.READ_LATER,
-                               ((CheckBox) root.findViewById(R.id.readlater)).isChecked());
+                               ((CheckBox) root.findViewById(R.id.readlater_checkbox)).isChecked());
                 parameters.set(SearchParameters.SearchParameter.GORE,
                                ((CheckBox) root.findViewById(R.id.gore)).isChecked());
                 parameters.set(SearchParameters.SearchParameter.SEX,
                                ((CheckBox) root.findViewById(R.id.sex)).isChecked());
                 parameters.set(SearchParameters.SearchParameter.NAME,
-                               ((EditText) root.findViewById(R.id.title)).getText().toString());
+                               ((EditText) root.findViewById(R.id.query_title)).getText().toString());
                 int contentRatingId = (int) ((Spinner) root.findViewById(R.id.content_rating)).getSelectedItemId();
                 if (contentRatingId != 0) {
                     parameters.set(SearchParameters.SearchParameter.CONTENT_RATING,
@@ -85,10 +85,10 @@ public abstract class SearchBuilder {
                     parameters.set(SearchParameters.SearchParameter.USER,
                                    User.createMutable()
                                        .set(User.UserKey.ID,
-                                            Integer.parseInt(((EditText) root.findViewById(R.id.author)).getText()
-                                                                                                        .toString())
-                                       )
-                    );
+                                            Integer.parseInt(((EditText) root.findViewById(R.id.query_author)).getText()
+                                                                                                              .toString())
+                                           )
+                                  );
                 } catch (NumberFormatException ignored) {}
 
 

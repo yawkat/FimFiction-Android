@@ -189,12 +189,12 @@ public class StoryDetail {
                 View separator = new View(helper.context());
                 separator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
                 separator.setBackgroundColor(0x88FFFFFF);
-                ((ViewGroup) root.findViewById(R.id.chapters)).addView(separator);
+                ((ViewGroup) root.findViewById(R.id.chapter_list)).addView(separator);
             }
             first = false;
             final View chapterView = helper.layoutInflater().inflate(R.layout.chapter, null);
             ((TextView) chapterView.findViewById(R.id.title)).setText(chapter.getString(Chapter.ChapterKey.TITLE));
-            chapterView.findViewById(R.id.unread)
+            chapterView.findViewById(R.id.unread_query)
                        .setVisibility(chapter.getBoolean(Chapter.ChapterKey.UNREAD) ? View.VISIBLE : View.GONE);
             chapterView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -209,7 +209,7 @@ public class StoryDetail {
                                     chapterView.getHandler().post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            chapterView.findViewById(R.id.unread)
+                                            chapterView.findViewById(R.id.unread_query)
                                                        .setVisibility(chapter.getBoolean(Chapter.ChapterKey.UNREAD) ?
                                                                               View.VISIBLE :
                                                                               View.GONE);
@@ -224,7 +224,7 @@ public class StoryDetail {
                     });
                 }
             });
-            ((ViewGroup) root.findViewById(R.id.chapters)).addView(chapterView);
+            ((ViewGroup) root.findViewById(R.id.chapter_list)).addView(chapterView);
         }
         TagManager.TagList list = helper.getTagManager().createTagList(false, story);
         list.getView()

@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
             <Button
-                    android:id="@+id/unread"
+                    android:id="@+id/unread_query"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/DrawerButton"/>
@@ -59,7 +59,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#b0b0b0"></View>
+                        android:background="#b0b0b0"/>
 
             </LinearLayout>
 
@@ -94,7 +94,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#b0b0b0"></View>
+                        android:background="#b0b0b0"/>
 
             </LinearLayout>
 

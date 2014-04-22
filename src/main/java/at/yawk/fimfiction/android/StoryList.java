@@ -53,7 +53,7 @@ public class StoryList extends Fimtivity {
         layout.setPullToRefreshAttacher(attacher, new PullToRefreshAttacher.OnRefreshListener() {
             @Override
             public void onRefreshStarted(View view) {
-                replaceParameters(worker.getParameters(), true);
+                replaceParameters(worker.getParameters());
                 attacher.setRefreshComplete();
             }
         });
@@ -62,7 +62,7 @@ public class StoryList extends Fimtivity {
             addSearch(search, false);
         }
 
-        replaceParameters(r.getParameters(), false);
+        replaceParameters(r.getParameters());
 
         helper().<Button>view(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class StoryList extends Fimtivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceParameters(parameters, false);
+                replaceParameters(parameters);
                 helper().<DrawerLayout>view(R.id.drawer).closeDrawer(Gravity.LEFT);
             }
         });
@@ -116,7 +116,7 @@ public class StoryList extends Fimtivity {
         worker.updateTitle();
     }
 
-    private void replaceParameters(SearchParameters parameters, boolean force) {
+    private void replaceParameters(SearchParameters parameters) {
         worker.setParams(parameters);
         updateCategoryButtons();
     }
@@ -155,9 +155,9 @@ public class StoryList extends Fimtivity {
         switch (requestCode) {
         case REQUEST_CODE_SEARCH:
             if (resultCode == RESULT_OK) {
-                final SearchParameters parameters = data.<ParamReader>getParcelableExtra("parameters").getParameters();
+                SearchParameters parameters = data.<ParamReader>getParcelableExtra("parameters").getParameters();
                 addSearch(parameters, true);
-                replaceParameters(parameters, false);
+                replaceParameters(parameters);
             }
             break;
         }
@@ -172,7 +172,7 @@ public class StoryList extends Fimtivity {
                 helper().getPreferences().getSearchConfig().add(parameters);
                 helper().getPreferences().save();
             }
-            final ViewGroup searches = helper().<ViewGroup>view(R.id.searches);
+            final ViewGroup searches = helper().view(R.id.searches);
             searches.addView(v);
             v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,7 +182,7 @@ public class StoryList extends Fimtivity {
                     helper().getPreferences().getSearchConfig().remove(parameters);
                     helper().getPreferences().save();
                     if (worker.getParameters().equals(parameters)) {
-                        replaceParameters(helper().getParameterManager().getDefault(), false);
+                        replaceParameters(helper().getParameterManager().getDefault());
                     }
                 }
             });

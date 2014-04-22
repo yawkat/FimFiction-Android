@@ -21,7 +21,8 @@ import lombok.extern.log4j.Log4j;
 public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, StoryDownloadTask.Progress, Boolean> {
     @Override
     protected Boolean doInBackground(Params... params) {
-        assert params.length == 1;
+        log.assertLog(params.length == 1, "download params != 1");
+
         Story story = params[0].getStory();
         File target = params[0].getTarget();
 
@@ -69,6 +70,7 @@ public class StoryDownloadTask extends AsyncTask<StoryDownloadTask.Params, Story
         private final File target;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     @Value
     public static class Progress {
         private final int current;

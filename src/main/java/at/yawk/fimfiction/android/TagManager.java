@@ -142,6 +142,7 @@ public class TagManager {
                                            @Nullable
                                            @Override
                                            public FimCharacter apply(@Nullable Tag tag) {
+                                               assert tag != null;
                                                return ((CharacterTag) tag).character;
                                            }
                                        }
@@ -154,6 +155,7 @@ public class TagManager {
                                            @Nullable
                                            @Override
                                            public Category apply(@Nullable Tag tag) {
+                                               assert tag != null;
                                                return ((CategoryTag) tag).category;
                                            }
                                        }

@@ -26,7 +26,7 @@ public class SearchParameterManager {
 
     private void init() {
         add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(UNREAD, true).set(FAVORITED, true),
-            R.id.unread,
+            R.id.unread_query,
             R.string.unread);
         add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(FAVORITED, true),
             R.id.favorite,
@@ -65,7 +65,7 @@ public class SearchParameterManager {
         if (button != 0) { buttons.put(button, parameters); }
     }
 
-    public SearchParameters getDefault() { return buttons.get(R.id.unread); }
+    public SearchParameters getDefault() { return buttons.get(R.id.unread_query); }
 
     private String customNameOrNull(SearchParameters parameters) {
         JsonObject conf = helper.getPreferences().getConfig().getAsJsonObject("names");
@@ -96,7 +96,6 @@ public class SearchParameterManager {
     }
 
     public Map<Button, SearchParameters> findButtons(ActivityHelper helper) {
-        JsonObject conf = helper.getPreferences().getConfig().getAsJsonObject("names");
         Map<Button, SearchParameters> res = Maps.newHashMap();
         for (int k : buttons.keySet()) {
             Button button = helper.view(k);

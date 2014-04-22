@@ -56,7 +56,7 @@
                 android:id="@+id/characters"/>
 
         <LinearLayout
-                android:id="@+id/chapters"
+                android:id="@+id/chapter_list"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/characters"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/chapters">
+                android:layout_below="@+id/chapter_list">
 
             <TextView
                     android:id="@+id/favorite"

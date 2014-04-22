@@ -1,6 +1,6 @@
 package at.yawk.fimfiction.android;
 
-import com.google.common.io.Closeables;
+import com.google.common.io.Closer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.*;
@@ -22,15 +22,17 @@ public class PublicPreferenceManager {
 
     public void load() {
         if (configFile().exists()) {
-            Reader reader = null;
+            Closer closer = Closer.create();
             try {
-                reader = new FileReader(configFile());
+                Reader reader = closer.register(new FileReader(configFile()));
                 config = new JsonParser().parse(reader).getAsJsonObject();
                 queryConfig.load();
             } catch (IOException e) {
                 log.error(e);
             } finally {
-                Closeables.closeQuietly(reader);
+                try {
+                    closer.close();
+                } catch (IOException ignored) {}
             }
         }
     }
@@ -45,14 +47,16 @@ public class PublicPreferenceManager {
     }
 
     private synchronized void save0() {
-        Writer writer = null;
+        Closer closer = Closer.create();
         try {
-            writer = new FileWriter(configFile());
+            Writer writer = new FileWriter(configFile());
             writer.write(config.toString());
         } catch (IOException e) {
             log.error(e);
         } finally {
-            Closeables.closeQuietly(writer);
+            try {
+                closer.close();
+            } catch (IOException ignored) {}
         }
     }
 

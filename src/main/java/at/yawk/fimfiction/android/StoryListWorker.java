@@ -48,6 +48,7 @@ public class StoryListWorker {
     }
 
     public void updateTitle() {
+        assert session != null;
         helper.getParameterManager().getName(session.state).assignTitle(helper.activity());
     }
 
@@ -156,7 +157,10 @@ public class StoryListWorker {
         theDialog.show();
     }
 
-    public SearchParameters getParameters() { return session.state; }
+    public SearchParameters getParameters() {
+        assert session != null;
+        return session.state;
+    }
 
     @RequiredArgsConstructor
     private class WorkerSession implements Runnable, TaskManager.TaskContext {

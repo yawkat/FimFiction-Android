@@ -25,7 +25,7 @@ public class SearchView {
     private final Helper helper;
     private final SearchUrl.CompiledSearchParameters parameters;
 
-    @Getter private List<Story> stories;
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") @Getter private List<Story> stories;
     private int page;
     private boolean hasMore;
 
@@ -56,7 +56,8 @@ public class SearchView {
                                                     public Story apply(@Nullable Story input) {
                                                         return input == null ? null : input.mutableVersion();
                                                     }
-                                                });
+                                                }
+                                               );
         stories.addAll(storyList);
         hasMore = !(storyList/*.isEmpty() replaced for performance */.size() < 10);
         log.debug("Loaded data on page " + page + " (" + storyList.size() + " " + getStories().size() + ")");

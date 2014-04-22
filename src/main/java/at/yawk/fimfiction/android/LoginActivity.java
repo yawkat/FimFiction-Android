@@ -62,8 +62,7 @@ public class LoginActivity extends Fimtivity {
         helper().executeTask(new Runnable() {
             @Override
             public void run() {
-                final AtomicReference<SessionActions.LoginStatus> status =
-                        new AtomicReference<SessionActions.LoginStatus>();
+                final AtomicReference<SessionActions.LoginStatus> status = new AtomicReference<SessionActions.LoginStatus>();
                 while (true) {
                     if (Thread.currentThread().isInterrupted()) { return; }
                     try {
@@ -75,7 +74,7 @@ public class LoginActivity extends Fimtivity {
                             public void run() {
                                 Toast.makeText(LoginActivity.this,
                                                "Could not login (" + e.toString() + "), retrying...",
-                                               Toast.LENGTH_SHORT);
+                                               Toast.LENGTH_SHORT).show();
                             }
                         });
                         try {

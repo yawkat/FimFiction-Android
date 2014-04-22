@@ -32,6 +32,7 @@ public class ActivityHelper extends Helper {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <V extends View> V view(int id) { return (V) activity().findViewById(id); }
 
     public void openFileExternal(File file,

@@ -151,6 +151,8 @@ public class StoryListWorker {
         });
         dialog.setView(storyDetail.createView(helper));
         AlertDialog theDialog = dialog.create();
+        theDialog.setCancelable(true);
+        theDialog.setCanceledOnTouchOutside(true);
         theDialog.show();
     }
 

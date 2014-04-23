@@ -4,10 +4,7 @@ import android.graphics.Bitmap;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import at.yawk.fimfiction.core.AccountActions;
 import at.yawk.fimfiction.data.*;
 import java.net.URL;
@@ -84,6 +81,17 @@ public class StoryDetail {
             statusTags.addView(TranslatableText.id(R.string.gore_short)
                                                .textView(helper, R.layout.status_tag, 0xDD3333));
         }
+        int likes = story.getInt(Story.StoryKey.LIKE_COUNT, 0);
+        int dislikes = story.getInt(Story.StoryKey.DISLIKE_COUNT, 0);
+        statusTags.addView(TranslatableText.string(Integer.toString(likes))
+                                           .textView(helper, R.layout.status_tag, 0x547F1D));
+        statusTags.addView(TranslatableText.string(Integer.toString(dislikes))
+                                           .textView(helper, R.layout.status_tag, 0x952525));
+        int max = 10000;
+        ((ProgressBar) root.findViewById(R.id.likes_bar)).setProgress(likes + dislikes == 0 ?
+                                                                              max :
+                                                                              (int) ((float) likes /
+                                                                                     (likes + dislikes) * max));
         String html = story.<FormattedString>get(Story.StoryKey.DESCRIPTION)
                            .buildFormattedText(FormattedString.Markup.HTML);
         ((TextView) root.findViewById(R.id.description)).setText(Html.fromHtml(html));

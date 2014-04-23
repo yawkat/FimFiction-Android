@@ -27,8 +27,16 @@ public class PublicPreferenceManager {
                 Reader reader = closer.register(new FileReader(configFile()));
                 config = new JsonParser().parse(reader).getAsJsonObject();
                 queryConfig.load();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.error(e);
+
+                // backup config to config.json.<number> with lowest number possible
+                for (int i = 1; ; i++) {
+                    File backup = new File(helper.baseDir(), "config.json." + i);
+                    if (backup.exists()) { continue; }
+                    configFile().renameTo(backup);
+                    break;
+                }
             } finally {
                 try {
                     closer.close();
@@ -47,17 +55,28 @@ public class PublicPreferenceManager {
     }
 
     private synchronized void save0() {
+        log.info("Saving config...");
+
+        File tmpFile = new File(helper.baseDir(), "config.json.tmp");
+
         Closer closer = Closer.create();
         try {
-            Writer writer = new FileWriter(configFile());
+            Writer writer = closer.register(new FileWriter(tmpFile));
             writer.write(config.toString());
         } catch (IOException e) {
             log.error(e);
+            return;
         } finally {
             try {
                 closer.close();
-            } catch (IOException ignored) {}
+            } catch (IOException ce) {
+                log.error(ce);
+            }
         }
+
+        File cfg = configFile();
+        boolean result = tmpFile.renameTo(cfg);
+        if (!result) { log.error("Could not save config: Rename failed"); }
     }
 
     private File configFile() { return new File(helper.baseDir(), "config.json"); }

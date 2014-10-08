@@ -5,10 +5,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import at.yawk.fimfiction.data.ContentRating;
-import at.yawk.fimfiction.data.Order;
-import at.yawk.fimfiction.data.SearchParameters;
-import at.yawk.fimfiction.data.User;
+import android.widget.TextView;
+import at.yawk.fimfiction.data.*;
 import com.google.common.collect.ImmutableSet;
 import lombok.extern.log4j.Log4j;
 
@@ -29,12 +27,13 @@ public abstract class SearchBuilder {
             @Override
             public void onClick(View v) {
                 SearchParameters p = SearchParameters.createMutable();
-                p.set(SearchParameters.SearchParameter.FAVORITED,
-                      ((CheckBox) root.findViewById(R.id.favorite_checkbox)).isChecked());
+                try {
+                    p.set(SearchParameters.SearchParameter.SHELF,
+                        Shelf.createMutable().set(Shelf.ShelfKey.ID, Integer.parseInt(((TextView) root.findViewById(R.id.query_shelf)).getText().toString())));
+                } catch (NumberFormatException ignored) {
+                }
                 p.set(SearchParameters.SearchParameter.UNREAD,
                       ((CheckBox) root.findViewById(R.id.unread_checkbox)).isChecked());
-                p.set(SearchParameters.SearchParameter.READ_LATER,
-                      ((CheckBox) root.findViewById(R.id.readlater_checkbox)).isChecked());
                 p.set(SearchParameters.SearchParameter.GORE, ((CheckBox) root.findViewById(R.id.gore)).isChecked());
                 p.set(SearchParameters.SearchParameter.SEX, ((CheckBox) root.findViewById(R.id.sex)).isChecked());
                 p.set(SearchParameters.SearchParameter.NAME,

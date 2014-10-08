@@ -12,6 +12,7 @@
     <string name="ms_hide">Hide M/S</string>
     <string name="title">Title</string>
     <string name="author_id">Author ID</string>
+    <string name="shelf_id">Shelf ID</string>
     <string name="favorited">Favorited</string>
     <string name="gore_short">G</string>
     <string name="sex_short">S</string>

@@ -20,19 +20,13 @@
             android:hint="@string/author_id"
             android:inputType="number"/>
 
-    <TextView
-            android:text="@string/favorited"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/TextAppearance.Large"
-            android:layout_alignBaseline="@+id/favorite_checkbox"/>
-
-    <CheckBox
-            android:id="@+id/favorite_checkbox"
+    <EditText
             android:layout_below="@id/query_author"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/query_shelf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/shelf_id"
+            android:inputType="number"/>
 
     <TextView
             android:text="@string/unread"
@@ -43,28 +37,13 @@
 
     <CheckBox
             android:id="@+id/unread_checkbox"
-            android:layout_below="@id/favorite_checkbox"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:text="@string/readlater"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/TextAppearance.Large"
-            android:layout_alignBaseline="@+id/readlater_checkbox"
-            />
-
-    <CheckBox
-            android:id="@+id/readlater_checkbox"
-            android:layout_below="@id/unread_checkbox"
+            android:layout_below="@id/query_shelf"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <LinearLayout
-            android:layout_below="@id/readlater_checkbox"
+            android:layout_below="@id/unread_checkbox"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

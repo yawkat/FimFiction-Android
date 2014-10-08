@@ -26,44 +26,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <Button
-                    android:id="@+id/unread_query"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/DrawerButton"/>
-
-            <Button
-                    android:id="@+id/favorite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/DrawerButton"/>
-
-            <Button
-                    android:id="@+id/readlater"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/DrawerButton"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        style="@android:style/TextAppearance.Holo.Small"
-                        android:text="@string/search"/>
-
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#b0b0b0"/>
-
-            </LinearLayout>
-
-
             <LinearLayout
                     android:id="@+id/searches"
                     android:layout_width="match_parent"

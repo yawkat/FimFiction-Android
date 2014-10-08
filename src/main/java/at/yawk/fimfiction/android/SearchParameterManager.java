@@ -25,15 +25,6 @@ public class SearchParameterManager {
     { init(); }
 
     private void init() {
-        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(UNREAD, true).set(FAVORITED, true),
-            R.id.unread_query,
-            R.string.unread);
-        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(FAVORITED, true),
-            R.id.favorite,
-            R.string.favorite);
-        add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE).set(READ_LATER, true),
-            R.id.readlater,
-            R.string.readlater);
         add(SearchParameters.createMutable().set(ORDER, Order.HOT), R.id.hot, R.string.hot);
         add(SearchParameters.createMutable().set(ORDER, Order.UPDATE_DATE), R.id.updates, R.string.updates);
         add(SearchParameters.createMutable()
@@ -64,8 +55,6 @@ public class SearchParameterManager {
         names.put(parameters, name);
         if (button != 0) { buttons.put(button, parameters); }
     }
-
-    public SearchParameters getDefault() { return buttons.get(R.id.unread_query); }
 
     private String customNameOrNull(SearchParameters parameters) {
         JsonObject conf = helper.getPreferences().getConfig().getAsJsonObject("names");

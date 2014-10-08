@@ -11,6 +11,8 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonPrimitive;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+
 import lombok.extern.log4j.Log4j;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
@@ -24,8 +26,7 @@ public class StoryList extends Fimtivity {
 
     private StoryListWorker worker;
 
-    private final Map<Button, SearchParameters> categoryButtons = Maps.newHashMap();
-    private final List<Button> sortedCategoryButtons = Lists.newArrayList();
+    private final Map<Button, SearchParameters> categoryButtons = Maps.newLinkedHashMap();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,6 @@ public class StoryList extends Fimtivity {
         worker = new StoryListWorker(helper());
 
         Intent intent = getIntent();
-        ParamReader r;
-        if (intent.hasExtra("search")) {
-            r = intent.getParcelableExtra("search");
-        } else {
-            r = new ParamReader(helper().getParameterManager().getDefault());
-        }
 
         for (Map.Entry<Button, SearchParameters> button : helper().getParameterManager()
                                                                   .findButtons(helper())
@@ -62,6 +57,13 @@ public class StoryList extends Fimtivity {
             addSearch(search, false);
         }
 
+        ParamReader r;
+        if (intent.hasExtra("search")) {
+            r = intent.getParcelableExtra("search");
+        } else {
+            r = new ParamReader(categoryButtons.values().iterator().next());
+        }
+
         replaceParameters(r.getParameters());
 
         helper().<Button>view(R.id.search).setOnClickListener(new View.OnClickListener() {
@@ -75,7 +77,6 @@ public class StoryList extends Fimtivity {
 
     private void prepareListButton(Button button, final SearchParameters parameters) {
         categoryButtons.put(button, parameters);
-        sortedCategoryButtons.add(button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,12 +88,11 @@ public class StoryList extends Fimtivity {
 
     private void removeListButton(Button button) {
         categoryButtons.remove(button);
-        sortedCategoryButtons.remove(button);
     }
 
     private void updateCategoryButtons() {
         int generated = 0;
-        for (Button button : sortedCategoryButtons) {
+        for (Button button : categoryButtons.keySet()) {
             final SearchParameters parameters = categoryButtons.get(button);
             final String name;
             if (helper().getParameterManager().hasFixedName(parameters)) {
@@ -182,7 +182,7 @@ public class StoryList extends Fimtivity {
                     helper().getPreferences().getSearchConfig().remove(parameters);
                     helper().getPreferences().save();
                     if (worker.getParameters().equals(parameters)) {
-                        replaceParameters(helper().getParameterManager().getDefault());
+                        replaceParameters(categoryButtons.values().iterator().next());
                     }
                 }
             });

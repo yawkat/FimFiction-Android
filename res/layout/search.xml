@@ -25,7 +25,6 @@
             android:layout_below="@id/query_author"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layoutDirection="rtl"
             android:layout_height="wrap_content">
         <Button
                 android:text="@string/shelves"

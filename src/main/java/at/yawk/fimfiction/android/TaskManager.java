@@ -1,9 +1,6 @@
 package at.yawk.fimfiction.android;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -30,13 +27,20 @@ public class TaskManager {
 
     public synchronized void interruptScheduler() {
         try {
-            Iterator<Task> itr = tasks.iterator();
-            while (itr.hasNext()) {
-                Task task = itr.next();
-                task.checkForInterrupt();
-                if (!task.isValid()) {
-                    log.debug("Removing invalid task " + task + " from task queue (" + tasks.size() + " remaining)");
-                    itr.remove();
+            while (true) {
+                try {
+                    Iterator<Task> itr = tasks.iterator();
+                    while (itr.hasNext()) {
+                        Task task = itr.next();
+                        task.checkForInterrupt();
+                        if (!task.isValid()) {
+                            log.debug("Removing invalid task " + task + " from task queue (" + tasks.size() + " remaining)");
+                            itr.remove();
+                        }
+                    }
+                    break;
+                } catch (ConcurrentModificationException ignored) {
+                    // the task map may have been changed by GC and may cause this, just try again in that case
                 }
             }
         } catch (Exception e) { log.error("Failed while interrupting scheduled tasks", e); }
